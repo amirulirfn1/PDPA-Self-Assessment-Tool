@@ -1,0 +1,72 @@
+[debug] [2024-07-21T03:31:59.228Z] ----------------------------------------------------------------------
+[debug] [2024-07-21T03:31:59.231Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\amiru\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init hosting
+[debug] [2024-07-21T03:31:59.232Z] CLI Version:   13.13.3
+[debug] [2024-07-21T03:31:59.232Z] Platform:      win32
+[debug] [2024-07-21T03:31:59.232Z] Node Version:  v20.11.1
+[debug] [2024-07-21T03:31:59.233Z] Time:          Sun Jul 21 2024 11:31:59 GMT+0800 (Malaysia Time)
+[debug] [2024-07-21T03:31:59.233Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-21T03:31:59.316Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-21T03:31:59.317Z] > authorizing via signed-in user (amirulirfan.utm@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\amiru\OneDrive\Documents\GitHub\Privacy Policy Pro PDPA Act Self Assessment Tool
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-07-21T03:32:02.777Z] Using project from CLI flag: pdpa-self-assessment-tool
+[debug] [2024-07-21T03:32:02.780Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pdpa-self-assessment-tool [none]
+[debug] [2024-07-21T03:32:03.202Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pdpa-self-assessment-tool 200
+[debug] [2024-07-21T03:32:03.203Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pdpa-self-assessment-tool {"projectId":"pdpa-self-assessment-tool","projectNumber":"394371555199","displayName":"PDPA Self-Assessment Tool","name":"projects/pdpa-self-assessment-tool","resources":{"hostingSite":"pdpa-self-assessment-tool","realtimeDatabaseInstance":"pdpa-self-assessment-tool-default-rtdb"},"state":"ACTIVE","etag":"1_fbe34c6f-95fd-4eb4-a20c-265cf7f7aca5"}
+[info] i  Using project pdpa-self-assessment-tool (PDPA Self-Assessment Tool) 
+[info] 
+=== Hosting Setup
+[debug] [2024-07-21T03:32:03.208Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pdpa-self-assessment-tool [none]
+[debug] [2024-07-21T03:32:03.731Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pdpa-self-assessment-tool 200
+[debug] [2024-07-21T03:32:03.731Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pdpa-self-assessment-tool {"projectId":"pdpa-self-assessment-tool","projectNumber":"394371555199","displayName":"PDPA Self-Assessment Tool","name":"projects/pdpa-self-assessment-tool","resources":{"hostingSite":"pdpa-self-assessment-tool","realtimeDatabaseInstance":"pdpa-self-assessment-tool-default-rtdb"},"state":"ACTIVE","etag":"1_fbe34c6f-95fd-4eb4-a20c-265cf7f7aca5"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
+[debug] [2024-07-21T03:33:38.532Z] ----------------------------------------------------------------------
+[debug] [2024-07-21T03:33:38.535Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\amiru\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init hosting
+[debug] [2024-07-21T03:33:38.536Z] CLI Version:   13.13.3
+[debug] [2024-07-21T03:33:38.536Z] Platform:      win32
+[debug] [2024-07-21T03:33:38.536Z] Node Version:  v20.11.1
+[debug] [2024-07-21T03:33:38.536Z] Time:          Sun Jul 21 2024 11:33:38 GMT+0800 (Malaysia Time)
+[debug] [2024-07-21T03:33:38.536Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-21T03:33:38.611Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-21T03:33:38.611Z] > authorizing via signed-in user (amirulirfan.utm@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\amiru\OneDrive\Documents\GitHub\Privacy Policy Pro PDPA Act Self Assessment Tool
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PRIVACY POLICY PRO | Profile</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+    <link href="img/favicon.png" rel="icon" />
+    <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <style>
+      .btn-primary {
+        background-color: skyblue;
+        color: white;
+        display: block;
+        margin: 0 auto;
+      }
+      #signoutbtn:hover {
+        cursor: pointer;
+      }
+      .profile-container {
+        margin-top: 50px;
+      }
+      .profile-container form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  <script defer src="profile.js"></script><link href="profile.css" rel="stylesheet"></head>
+  <body>
+    <header id="header" class="fixed-top header-inner-pages">
+      <div class="container d-flex align-items-center">
+        <h1 class="logo me-auto"><a href="home.html">Privacy Policy Pro</a></h1>
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li>
+              <a class="nav-link scrollto active" href="home.html">Home</a>
+            </li>
+            <li>
+              <a class="nav-link scrollto" href="assessment.html"
+                >Assessment Tool</a
+              >
+            </li>
+            <li>
+              <a class="nav-link scrollto" href="feedback.html">Feedback</a>
+            </li>
+            <li class="dropdown">
+              <a href="#"
+                ><span>More</span> <i class="bi bi-chevron-down"></i
+              ></a>
+              <ul>
+                <li><a href="profile.html">User Profile</a></li>
+                <li><a href="assessmentresult.html">Assessment Result</a></li>
+                <li>
+                  <a id="signoutbtn" style="color: red" href="#">Sign Out</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+      </div>
+    </header>
+
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <h1 style="text-align: center">Profile</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container profile-container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-8">
+          <div class="border p-3">
+            <form id="detailsForm">
+              <div id="basicForm">
+                <h3>Personal Details</h3>
+                <div class="form-group">
+                  <label for="title">Title:</label>
+                  <input type="text" class="form-control" id="title" />
+                  <br />
+                </div>
+                <div class="form-group">
+                  <label for="fullname">Full Name:</label>
+                  <input type="text" class="form-control" id="fullname" />
+                  <br />
+                </div>
+                <div class="form-group">
+                  <label for="organization">Organization Name:</label>
+                  <input type="text" class="form-control" id="organization" />
+                  <br />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input type="text" class="form-control" id="email" disabled />
+                  <br />
+                </div>
+                <div class="form-group">
+                  <label for="phoneNumber">Phone Number:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phoneNumber"
+                    minlength="9"
+                    maxlength="11"
+                  />
+                  <br />
+                </div>
+                <div class="form-group">
+                  <label for="address">Company Address:</label>
+                  <input type="text" class="form-control" id="address" />
+                  <br />
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary btn-block rounded-pill"
+                name="submitbtn"
+              >
+                Update
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

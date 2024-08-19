@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PRIVACY POLICY PRO | Feedback</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+    <link href="img/favicon.png" rel="icon" />
+    <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <style>
+      .btn-primary {
+        background-color: skyblue;
+        color: white;
+        display: block;
+        margin: 0 auto;
+      }
+      .form-container {
+        margin-top: 50px;
+      }
+      .form-container form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      #signoutbtn:hover {
+        cursor: pointer;
+      }
+    </style>
+  <script defer src="feedback.js"></script><link href="feedback.css" rel="stylesheet"></head>
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top header-inner-pages">
+      <div class="container d-flex align-items-center">
+        <h1 class="logo me-auto"><a href="home.html">PRIVACY POLICY PRO</a></h1>
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li>
+              <a class="nav-link scrollto" href="home.html"
+                >PDPA Act Guidelines</a
+              >
+            </li>
+            <li>
+              <a class="nav-link scrollto" href="assessment.html"
+                >Assessment Tool</a
+              >
+            </li>
+            <li>
+              <a class="nav-link scrollto active" href="feedback.html"
+                >Feedback</a
+              >
+            </li>
+            <li class="dropdown">
+              <a href="#"
+                ><span>More</span> <i class="bi bi-chevron-down"></i
+              ></a>
+              <ul>
+                <li><a href="profile.html">User Profile</a></li>
+                <li><a href="assessmentresult.html">Assessment Result</a></li>
+                <li>
+                  <a id="signoutbtn" style="color: red" href="#">Sign Out</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <h1 style="text-align: center">User Feedback</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container form-container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <form id="feedbackForm" autocomplete="off">
+            <div class="mb-3">
+              <label for="feedback" class="form-label">Your Feedback</label>
+              <textarea
+                class="form-control"
+                id="feedback"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block rounded-pill"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

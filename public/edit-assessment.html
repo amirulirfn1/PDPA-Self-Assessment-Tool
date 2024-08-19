@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Assessments | Privacy Policy Pro</title>
+    <link rel="icon" href="img/favicon.png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Open Sans", sans-serif;
+        background-color: #f1f1f1;
+      }
+
+      .header {
+        background-color: #0066cc;
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+      }
+
+      .sidebar {
+        flex: 0 0 200px;
+        background-color: #0066cc;
+        color: #fff;
+        padding: 20px;
+        height: calc(100vh - 84px);
+        overflow-y: auto;
+      }
+
+      .sidebar a {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .sidebar a:hover {
+        background-color: #005bb5;
+      }
+
+      .content {
+        flex: 1;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        padding: 20px;
+        position: relative;
+        overflow: auto;
+      }
+
+      .content-inner {
+        position: relative;
+      }
+
+      .content h2 {
+        margin-top: 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .content p {
+        margin: 10px 0;
+        font-size: 16px;
+        color: #666;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: #0066cc;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #005bb5;
+      }
+
+      .content form {
+        max-width: 400px;
+        margin: auto;
+      }
+
+      .content form label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        display: block;
+      }
+
+      .content form input[type="text"],
+      .content form input[type="email"],
+      .content form textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      .content form .btn {
+        margin-top: 20px;
+      }
+
+      .question-item {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          height: auto;
+          padding-bottom: 20px;
+        }
+      }
+    </style>
+  <script defer src="editassessment.js"></script><link href="editassessment.css" rel="stylesheet"></head>
+
+  <body>
+    <header class="header">
+      <h1>Edit Assessments Questions</h1>
+    </header>
+
+    <div class="container">
+      <div class="sidebar">
+        <a href="adminmain.html">Dashboard</a>
+        <a href="adminprofile.html">Admin Profile</a>
+        <a href="userslist.html">User List</a>
+        <a href="view-feedback.html">View Feedback</a>
+        <a href="edit-assessment.html">Edit Self Assessment</a>
+        <a href="#" id="signoutbtn">Logout</a>
+      </div>
+      <div class="content">
+        <div class="content-inner">
+          <h2>Questions</h2>
+          <div id="questionsContainer"></div>
+          <button class="btn" onclick="addQuestion()">Add Question</button>
+
+          <form id="editQuestionForm" style="display: none">
+            <h2>Edit Question</h2>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" />
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+
+            <label for="question">Question:</label>
+            <textarea id="question" name="question"></textarea>
+
+            <label for="suggestion">Suggestion:</label>
+            <textarea id="suggestion" name="suggestion"></textarea>
+
+            <label for="importance">Importance:</label>
+            <input type="text" id="importance" name="importance" />
+
+            <button type="submit" class="btn">Save</button>
+            <button type="button" class="btn" onclick="cancelEdit()">
+              Cancel
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

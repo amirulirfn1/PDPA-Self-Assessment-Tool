@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users List | Privacy Policy Pro</title>
+    <link rel="icon" href="img/favicon.png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Open Sans", sans-serif;
+        background-color: #f1f1f1;
+      }
+
+      .header {
+        background-color: #0066cc;
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+      }
+
+      .sidebar {
+        flex: 0 0 200px;
+        background-color: #0066cc;
+        color: #fff;
+        padding: 20px;
+        height: calc(100vh - 84px);
+        overflow-y: auto;
+      }
+
+      .sidebar a {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .sidebar a:hover {
+        background-color: #005bb5;
+      }
+
+      .content {
+        flex: 1;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        padding: 20px;
+        position: relative;
+        overflow: auto;
+      }
+
+      .content-inner {
+        position: relative;
+      }
+
+      .content h2 {
+        margin-top: 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .content table,
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      .content th {
+        background-color: #0066cc;
+        color: white;
+      }
+
+      .content td {
+        color: #333;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: #0066cc;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #005bb5;
+      }
+
+      .edit-btn,
+      .delete-btn {
+        margin-right: 5px;
+      }
+
+      .edit-user-form-container {
+        display: none;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .edit-user-form-container form {
+        max-width: 400px;
+        margin: auto;
+      }
+
+      .edit-user-form-container form label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        display: block;
+      }
+
+      .edit-user-form-container form input[type="text"],
+      .edit-user-form-container form input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      .edit-user-form-container form .btn {
+        margin-top: 20px;
+        align-self: flex-start;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          flex: 0 0 100%;
+          height: auto;
+        }
+        .content {
+          flex: 0 0 100%;
+        }
+      }
+    </style>
+  <script defer src="userslist.js"></script><link href="userslist.css" rel="stylesheet"></head>
+  <body>
+    <header class="header">
+      <h1>Users List</h1>
+    </header>
+
+    <div class="container">
+      <div class="sidebar">
+        <a href="adminmain.html">Dashboard</a>
+        <a href="adminprofile.html">Admin Profile</a>
+        <a href="userslist.html">User List</a>
+        <a href="view-feedback.html">View Feedback</a>
+        <a href="edit-assessment.html">Edit Self Assessment</a>
+        <a href="#" id="signoutbtn">Logout</a>
+      </div>
+
+      <div class="content">
+        <div class="content-inner">
+          <h2>Users</h2>
+          <table id="usersTable">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Organization</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="edit-user-form-container" id="editUserFormContainer">
+            <form id="editUserForm">
+              <label for="editTitle">Title:</label>
+              <input type="text" id="editTitle" name="editTitle" />
+
+              <label for="editFullName">Full Name:</label>
+              <input type="text" id="editFullName" name="editFullName" />
+
+              <label for="editEmail">Email Address:</label>
+              <input type="email" id="editEmail" name="editEmail" />
+
+              <label for="editOrganization">Organization:</label>
+              <input
+                type="text"
+                id="editOrganization"
+                name="editOrganization"
+              />
+
+              <label for="editPhoneNumber">Phone Number:</label>
+              <input type="text" id="editPhoneNumber" name="editPhoneNumber" />
+
+              <label for="editAddress">Address:</label>
+              <input type="text" id="editAddress" name="editAddress" />
+
+              <input type="hidden" id="editUserId" name="editUserId" />
+
+              <button type="submit" class="btn" name="submitbtn">
+                Update User
+              </button>
+              <button type="button" class="btn" id="cancelEdit">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
