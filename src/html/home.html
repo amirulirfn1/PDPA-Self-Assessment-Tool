@@ -17,6 +17,32 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
       rel="stylesheet"
     />
+
+    <!-- Bootstrap CSS -->
+    <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+    />
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- AOS (Animate on Scroll) CSS and JS -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- Initialize AOS -->
+    <script>
+    AOS.init();
+    </script>
+
+  <script src="/src/js/home.js"></script>
+
   </head>
   <style>
     #signoutbtn:hover {
@@ -77,22 +103,24 @@
           >
             <h1>PDPA ACT GUIDELINES</h1>
             <h2>Do the quiz now!</h2>
+            <div class="row">
+              <div class="boxhome1">
+                <a class="getstarted1" href="./assessment.html"
+                  >Self Assessment Tool</a
+                >
+              </div>
+              <div class="boxhome2 ">
+                <a class="getstarted2 scrollto" href="./feedback.html"
+                  >Give Feedback</a
+                >
+              </div>
+            </div>
           </div>
           <div
-            class="col-lg-6 order-1 order-lg-2 hero-img"
-            data-aos="zoom-in"
-            data-aos-delay="200"
+            class="col-lg-6 order-1 order-lg-2 hero-img change-pic"
           >
-            <div class="boxhome">
-              <a class="getstarted" href="./assessment.html"
-                >Self Assessment Tool</a
-              >
-            </div>
-            <div class="boxhome">
-              <a class="getstarted scrollto" href="./feedback.html"
-                >Give Feedback</a
-              >
-            </div>
+          <img class="pdpapic1" src="\src\img\cta-bg.jpg" alt="">
+            
           </div>
         </div>
       </div>
