@@ -12,27 +12,84 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
       rel="stylesheet"
     />
+
     <style>
-      .btn-primary {
-        background-color: skyblue;
-        color: white;
-        display: block;
-        margin: 0 auto;
+      body {
+        font-family: "Open Sans", sans-serif;
+        background-color: #f0f2f5; /* Light grey background for smoother transition */
+        color: #333;
+        padding: 20px;
       }
-      #signoutbtn:hover {
-        cursor: pointer;
-      }
+
       .profile-container {
         margin-top: 50px;
+        max-width: 800px;
+        margin: auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px; /* Increased border-radius for smoother edges */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
       }
-      .profile-container form {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+      .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .profile-header h1 {
+        margin-bottom: 10px;
+      }
+
+      .profile-header p {
+        color: #777;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+
+      .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+        display: none;
+        text-align: center;
       }
     </style>
   </head>
+
   <body>
     <header id="header" class="fixed-top header-inner-pages">
       <div class="container d-flex align-items-center">
@@ -72,67 +129,65 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-6">
-            <h1 style="text-align: center">Profile</h1>
+            <h1 style="text-align: center; color: #333">Profile</h1>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="container profile-container">
-      <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6 col-sm-8">
-          <div class="border p-3">
-            <form id="detailsForm">
-              <div id="basicForm">
-                <h3>Personal Details</h3>
-                <div class="form-group">
-                  <label for="title">Title:</label>
-                  <input type="text" class="form-control" id="title" />
-                  <br />
-                </div>
-                <div class="form-group">
-                  <label for="fullname">Full Name:</label>
-                  <input type="text" class="form-control" id="fullname" />
-                  <br />
-                </div>
-                <div class="form-group">
-                  <label for="organization">Organization Name:</label>
-                  <input type="text" class="form-control" id="organization" />
-                  <br />
-                </div>
-                <div class="form-group">
-                  <label for="email">Email:</label>
-                  <input type="text" class="form-control" id="email" disabled />
-                  <br />
-                </div>
-                <div class="form-group">
-                  <label for="phoneNumber">Phone Number:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="phoneNumber"
-                    minlength="9"
-                    maxlength="11"
-                  />
-                  <br />
-                </div>
-                <div class="form-group">
-                  <label for="address">Company Address:</label>
-                  <input type="text" class="form-control" id="address" />
-                  <br />
-                </div>
-              </div>
-              <button
-                type="submit"
-                class="btn btn-primary btn-block rounded-pill"
-                name="submitbtn"
-              >
-                Update
-              </button>
-            </form>
-          </div>
-        </div>
+    <div class="profile-container">
+      <div class="profile-header">
+        <h1>User Profile</h1>
+        <p>Update your profile details</p>
       </div>
+
+      <form id="detailsForm">
+        <div class="form-group">
+          <label for="title" class="form-label">Title:</label>
+          <input type="text" class="form-control" id="title" />
+        </div>
+
+        <div class="form-group">
+          <label for="fullname" class="form-label">Full Name:</label>
+          <input type="text" class="form-control" id="fullname" />
+        </div>
+
+        <div class="form-group">
+          <label for="organization" class="form-label"
+            >Organization Name:</label
+          >
+          <input type="text" class="form-control" id="organization" />
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email:</label>
+          <input type="text" class="form-control" id="email" disabled />
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber" class="form-label">Phone Number:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="phoneNumber"
+            minlength="9"
+            maxlength="11"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="address" class="form-label">Company Address:</label>
+          <input type="text" class="form-control" id="address" />
+        </div>
+
+        <button type="submit" class="btn-primary btn-block">
+          Update Profile
+        </button>
+
+        <div id="successMessage" class="alert-success">
+          Profile updated successfully!
+        </div>
+      </form>
     </div>
   </body>
 </html>

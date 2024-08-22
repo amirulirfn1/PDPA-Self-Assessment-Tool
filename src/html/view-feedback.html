@@ -19,7 +19,7 @@
       }
 
       .header {
-        background-color: #0066cc;
+        background-color: #333333;
         padding: 20px;
         text-align: center;
         color: #fff;
@@ -38,34 +38,40 @@
 
       .sidebar {
         flex: 0 0 200px;
-        background-color: #0066cc;
+        background-color: #333333;
         color: #fff;
         padding: 20px;
         height: calc(100vh - 84px);
         overflow-y: auto;
+        border-radius: 10px;
       }
 
       .sidebar a {
         display: block;
-        width: 100%;
         padding: 10px 0;
         color: #fff;
         text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
       }
 
       .sidebar a:hover {
-        background-color: #005bb5;
+        background-color: #444444;
+      }
+
+      .sidebar a i {
+        margin-right: 10px;
       }
 
       .content {
         flex: 1;
         background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-left: 20px;
         padding: 20px;
         position: relative;
-        overflow: auto;
       }
 
       .content-inner {
@@ -77,12 +83,31 @@
         font-size: 24px;
         font-weight: bold;
         color: #333;
+        border-bottom: 2px solid #008080;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
       }
 
-      .content p {
-        margin: 10px 0;
-        font-size: 16px;
-        color: #666;
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .content table,
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      .content th {
+        background-color: #333333;
+        color: white;
+      }
+
+      .content td {
+        color: #333;
       }
 
       .btn {
@@ -101,15 +126,80 @@
         background-color: #005bb5;
       }
 
-      .content form {
-        max-width: 400px;
-        margin: auto;
+      .btn {
+        display: inline-block;
+        background-color: #008080;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-align: center;
       }
 
-      .content form label {
+      .btn:hover {
+        background-color: #006666;
+      }
+
+      .edit-user-form-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .edit-user-form-container form label {
         margin-bottom: 10px;
         font-weight: bold;
         display: block;
+      }
+
+      .edit-user-form-container form input[type="text"],
+      .edit-user-form-container form input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      .edit-user-form-container form .btn {
+        margin-top: 20px;
+        display: inline-block;
+        width: 48%;
+        box-sizing: border-box;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          flex: 0 0 100%;
+          height: auto;
+        }
+        .content {
+          flex: 0 0 100%;
+        }
       }
 
       .content form input[type="date"] {
@@ -140,12 +230,18 @@
 
     <div class="container">
       <div class="sidebar">
-        <a href="adminmain.html">Dashboard</a>
-        <a href="adminprofile.html">Admin Profile</a>
-        <a href="userslist.html">User List</a>
-        <a href="view-feedback.html">View Feedback</a>
-        <a href="edit-assessment.html">Edit Self Assessment</a>
-        <a href="#" id="signoutbtn">Logout</a>
+        <a href="adminmain.html"><i class="bi bi-house-door"></i>Dashboard</a>
+        <a href="adminprofile.html"
+          ><i class="bi bi-person"></i>Admin Profile</a
+        >
+        <a href="userslist.html"><i class="bi bi-people"></i>User List</a>
+        <a href="view-feedback.html"><i class="bi bi-chat"></i>View Feedback</a>
+        <a href="edit-assessment.html"
+          ><i class="bi bi-pencil-square"></i>Edit Self Assessment</a
+        >
+        <a href="#" id="signoutbtn"
+          ><i class="bi bi-box-arrow-right"></i>Logout</a
+        >
       </div>
 
       <div class="content">
