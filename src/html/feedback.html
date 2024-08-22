@@ -3,33 +3,105 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
     <title>PRIVACY POLICY PRO | Feedback</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
+
+    <!-- Favicons -->
     <link href="../img/favicon.png" rel="icon" />
     <link href="../img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
       rel="stylesheet"
     />
+
     <style>
+      body {
+        font-family: "Open Sans", sans-serif;
+        background-color: #f4f7f6;
+        color: #333;
+        padding: 20px;
+      }
+
       .btn-primary {
-        background-color: skyblue;
+        background-color: #007bff;
         color: white;
         display: block;
-        margin: 0 auto;
+        margin: 20px auto 0 auto;
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
       }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+
       .form-container {
         margin-top: 50px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin: auto;
       }
-      .form-container form {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+
       #signoutbtn:hover {
         cursor: pointer;
+      }
+
+      .rating {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .rating input {
+        display: none;
+      }
+
+      .rating label {
+        font-size: 30px;
+        color: #ccc;
+        cursor: pointer;
+        margin: 0 5px;
+      }
+
+      .rating input:checked ~ label,
+      .rating label:hover,
+      .rating label:hover ~ label {
+        color: #ffcc00;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+        display: none;
       }
     </style>
   </head>
@@ -77,35 +149,62 @@
     <section id="breadcrumbs" class="breadcrumbs">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-6">
-            <h1 style="text-align: center">User Feedback</h1>
+          <div class="col-lg-8">
+            <h1 style="text-align: center; margin-bottom: 30px">
+              User Feedback
+            </h1>
           </div>
         </div>
       </div>
     </section>
 
     <div class="container form-container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <form id="feedbackForm" autocomplete="off">
-            <div class="mb-3">
-              <label for="feedback" class="form-label">Your Feedback</label>
-              <textarea
-                class="form-control"
-                id="feedback"
-                rows="4"
-                required
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              class="btn btn-primary btn-block rounded-pill"
-            >
-              Submit
-            </button>
-          </form>
+      <form id="feedbackForm" autocomplete="off">
+        <!-- Rating System -->
+        <div class="rating">
+          <input type="radio" name="rating" id="star5" value="5" />
+          <label for="star5" title="5 stars">★</label>
+          <input type="radio" name="rating" id="star4" value="4" />
+          <label for="star4" title="4 stars">★</label>
+          <input type="radio" name="rating" id="star3" value="3" />
+          <label for="star3" title="3 stars">★</label>
+          <input type="radio" name="rating" id="star2" value="2" />
+          <label for="star2" title="2 stars">★</label>
+          <input type="radio" name="rating" id="star1" value="1" />
+          <label for="star1" title="1 star">★</label>
         </div>
-      </div>
+
+        <!-- Feedback Category -->
+        <div class="form-group">
+          <label for="category" class="form-label">Feedback Category</label>
+          <select id="category" class="form-control" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Website Usability">Website Usability</option>
+            <option value="Content Quality">Content Quality</option>
+            <option value="Customer Support">Customer Support</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- Feedback Textarea -->
+        <div class="form-group">
+          <label for="feedback" class="form-label">Your Feedback</label>
+          <textarea
+            class="form-control"
+            id="feedback"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="alert-success">
+          Feedback submitted successfully. Thank you!
+        </div>
+      </form>
     </div>
   </body>
 </html>

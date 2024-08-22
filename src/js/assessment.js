@@ -38,6 +38,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+let currentQuestionIndex = 0;
+let questions = [];
+let completedQuestions = new Set(); // To track completed questions
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     loadQuestions();
@@ -47,77 +51,141 @@ onAuthStateChanged(auth, (user) => {
 });
 
 async function loadQuestions() {
-  const questionsContainer = document.getElementById("questionsContainer");
   try {
     const q = query(collection(db, "questions"));
     const querySnapshot = await getDocs(q);
 
-    const questionsByCategory = {};
-
     querySnapshot.forEach((doc) => {
       const questionData = doc.data();
       const questionId = doc.id;
-      const category = questionData.category || "Uncategorized";
-
-      if (!questionsByCategory[category]) {
-        questionsByCategory[category] = [];
-      }
-
-      questionsByCategory[category].push({
-        id: questionId,
-        data: questionData,
-      });
+      console.log("Question fetched:", questionData);
+      questions.push({ id: questionId, data: questionData });
     });
 
-    let questionHTML = "";
-
-    for (const category in questionsByCategory) {
-      questionHTML += `<h3>${category}</h3>`;
-      questionsByCategory[category].forEach(({ id, data }) => {
-        questionHTML += `
-          <div class="tajuk">
-            <h4>${data.category}</h4>
-            <div class="row" style="padding-bottom: 10px">
-              <div class="col-lg-10 col-md-6">
-                <p>${data.question}</p>
-                <p># ${data.description}</p>
-                <p class="suggestion">Suggestion</p>
-                <p class="suggestion-text" style="font-size: 15px">
-                  ${data.suggestion}
-                </p>
-              </div>
-              <div class="col-lg-2 col-md-6">
-                <p>Importance Rating: <b>${data.importance}</b></p>
-                <ul class="answer-choice" style="list-style-type: none !important">
-                  <li class="form-group">
-                    <input type="radio" name="${id}" id="${id}-yes" value="Yes" required />
-                    <label for="${id}-yes">Yes</label>
-                  </li>
-                  <li class="form-group">
-                    <input type="radio" name="${id}" id="${id}-partially" value="Partially" required />
-                    <label for="${id}-partially">Partially</label>
-                  </li>
-                  <li class="form-group">
-                    <input type="radio" name="${id}" id="${id}-no" value="No" required />
-                    <label for="${id}-no">No</label>
-                  </li>
-                  <li class="form-group">
-                    <input type="radio" name="${id}" id="${id}-notapplicable" value="Not Applicable" required />
-                    <label for="${id}-notapplicable">Not Applicable</label>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        `;
-      });
+    if (questions.length > 0) {
+      showQuestion();
+      updateProgressIndicator();
+    } else {
+      console.error("No questions available");
     }
-
-    questionsContainer.innerHTML = questionHTML;
   } catch (error) {
     console.error("Error loading questions: ", error);
   }
 }
+
+function showQuestion() {
+  const questionContainer = document.getElementById("questionContainer");
+  if (!questionContainer) {
+    console.error("Question container not found");
+    return;
+  }
+
+  const submitBtn = document.getElementById("submitBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const progressBar = document.querySelector(".progress-bar");
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const questionNumber = currentQuestionIndex + 1;
+
+  console.log("Displaying question:", currentQuestion);
+
+  questionContainer.innerHTML = `
+    <div class="question-header">
+      <h4>Question ${questionNumber} of ${questions.length}</h4>
+      <h5>${currentQuestion.data.category}</h5>
+    </div>
+    <div class="question-body">
+      <p>${currentQuestion.data.question}</p>
+      <ul class="answer-choice" style="list-style-type: none !important">
+        <li class="form-group">
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-yes" value="Yes" required />
+          <label for="${currentQuestion.id}-yes">Yes</label>
+        </li>
+        <li class="form-group">
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-partially" value="Partially" required />
+          <label for="${currentQuestion.id}-partially">Partially</label>
+        </li>
+        <li class="form-group">
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-no" value="No" required />
+          <label for="${currentQuestion.id}-no">No</label>
+        </li>
+        <li class="form-group">
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-notapplicable" value="Not Applicable" required />
+          <label for="${currentQuestion.id}-notapplicable">Not Applicable</label>
+        </li>
+      </ul>
+    </div>
+  `;
+
+  prevBtn.style.visibility = currentQuestionIndex === 0 ? "hidden" : "visible";
+  nextBtn.style.display =
+    currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
+  submitBtn.classList.toggle(
+    "d-none",
+    currentQuestionIndex !== questions.length - 1
+  );
+
+  // Update progress bar
+  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  progressBar.style.width = `${progress}%`;
+  progressBar.setAttribute("aria-valuenow", progress);
+
+  // Update progress indicator after each question load
+  updateProgressIndicator();
+}
+
+function updateProgressIndicator() {
+  const progressIndicator = document.getElementById("progressIndicator");
+
+  if (!progressIndicator) {
+    console.error("Progress indicator element not found");
+    return;
+  }
+
+  progressIndicator.innerHTML = ""; // Clear previous indicators
+
+  questions.forEach((question, index) => {
+    const indicator = document.createElement("span");
+    indicator.classList.add("progress-dot");
+    indicator.classList.add(
+      completedQuestions.has(question.id) ? "completed" : "pending"
+    );
+    indicator.setAttribute("data-index", index + 1); // Attach the question number
+
+    // Make the dots clickable
+    indicator.addEventListener("click", () => {
+      currentQuestionIndex = index;
+      showQuestion();
+    });
+
+    progressIndicator.appendChild(indicator);
+  });
+}
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    showQuestion();
+  }
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  if (currentQuestionIndex < questions.length - 1) {
+    // Mark the current question as completed before moving to the next
+    const currentQuestion = questions[currentQuestionIndex];
+    const selectedOption = document.querySelector(
+      `input[name="${currentQuestion.id}"]:checked`
+    );
+
+    if (selectedOption) {
+      completedQuestions.add(currentQuestion.id);
+    }
+
+    currentQuestionIndex++;
+    showQuestion();
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const assessmentForm = document.querySelector("#assessmentForm");

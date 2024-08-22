@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>PRIVACY POLICY PRO | Assessment Result</title>
+    <title>PRIVACY POLICY PRO | PDPA Assessment Result</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -17,18 +17,146 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
       rel="stylesheet"
     />
-  </head>
-  <style>
-    .btn-primary {
-      background-color: skyblue;
-      color: white;
-      display: block;
-      margin: 0 auto;
-    }
-    #signoutbtn:hover {
-      cursor: pointer;
-    }
-  </style>
+
+    <!-- Custom CSS -->
+    <style>
+      body {
+        font-family: "Open Sans", sans-serif;
+        color: #333;
+        line-height: 1.6;
+        background-color: #f4f7f6;
+        padding: 20px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+      }
+
+      #signoutbtn:hover,
+      .btn-primary:hover,
+      .btn-secondary:hover {
+        background-color: #0056b3;
+      }
+
+      .report-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .report-header,
+      .report-footer {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .report-header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .report-header p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #555;
+      }
+
+      .result-container h3 {
+        color: #333;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        font-size: 22px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+      }
+
+      .progress {
+        height: 20px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #007bff;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        line-height: 20px;
+        transition: width 0.5s;
+        border-radius: 10px;
+      }
+
+      .improvement-area {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+      }
+
+      .improvement-area:last-child {
+        border-bottom: none;
+      }
+
+      p,
+      ul {
+        color: #666;
+        font-size: 16px;
+      }
+
+      .report-footer p {
+        font-size: 14px;
+        color: #777;
+      }
+
+      hr {
+        border-top: 1px solid #ccc;
+      }
+
+      @media print {
+        .btn-primary,
+        .btn-secondary,
+        #signoutbtn,
+        header {
+          display: none;
+        }
+
+        body {
+          background-color: #fff;
+        }
+
+        .report-container {
+          border: none;
+          box-shadow: none;
+          margin-top: 0;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -44,15 +172,24 @@
               >
             </li>
             <li>
-              <a class="nav-link scrollto" href="assessment.html"
+              <a class="nav-link scrollto active" href="#about"
                 >Assessment Tool</a
               >
             </li>
             <li>
               <a class="nav-link scrollto" href="feedback.html">Feedback</a>
             </li>
-            <li>
-              <a class="nav-link scrollto" id="signoutbtn" href="#">Sign Out</a>
+            <li class="dropdown">
+              <a href="#"
+                ><span>More</span> <i class="bi bi-chevron-down"></i
+              ></a>
+              <ul>
+                <li><a href="profile.html">User Profile</a></li>
+                <li><a href="assessmentresult.html">Assessment Result</a></li>
+                <li>
+                  <a id="signoutbtn" style="color: red" href="#">Sign Out</a>
+                </li>
+              </ul>
             </li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
@@ -61,18 +198,85 @@
     </header>
     <!-- End Header -->
 
+    <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-6">
-            <h1 style="text-align: center">Assessment Results</h1>
+          <div class="col-lg-8">
+            <h1 style="text-align: center; margin-bottom: 20px">
+              PDPA Assessment Results
+            </h1>
           </div>
         </div>
       </div>
     </section>
+    <!-- End Breadcrumbs -->
 
-    <div class="container result-container">
-      <div id="resultContainer"></div>
+    <!-- ======= Report Container ======= -->
+    <div class="report-container">
+      <!-- ======= Report Header ======= -->
+      <div class="report-header">
+        <h1 id="companyName">Company/Organization Name</h1>
+        <p>
+          Address: <span id="userAddress">1234 Example St, City, Country</span>
+        </p>
+        <p>
+          User in Charge: <span id="userTitle">Mr./Ms.</span>
+          <span id="userInCharge">John Doe</span>
+        </p>
+        <p>Email: <span id="userEmail">user@example.com</span></p>
+        <p>Phone: <span id="userPhone">+123 456 7890</span></p>
+        <p>Date: <span id="reportDate"></span></p>
+      </div>
+      <!-- End Report Header -->
+
+      <hr />
+
+      <!-- ======= Assessment Results ======= -->
+      <div id="resultContainer" class="result-container">
+        <h3>PDPA Assessment Results</h3>
+        <p>Score: 62.78%</p>
+        <div class="progress">
+          <div class="progress-bar" id="progressBar" style="width: 62.78%">
+            62.78%
+          </div>
+        </div>
+        <h4 style="margin-top: 30px">Areas for Improvement:</h4>
+        <ul>
+          <li class="improvement-area">
+            <strong>Question:</strong> Before responding to an access or
+            correction request, does your organization verify the identity of
+            the individual making the request?
+            <br />
+            <strong>Suggestion:</strong> Implement identity verification
+            procedures for access and correction requests.
+          </li>
+          <!-- Add more improvement areas as needed -->
+        </ul>
+      </div>
+
+      <hr />
+
+      <!-- ======= Report Footer ======= -->
+      <div class="report-footer">
+        <p>Prepared by: Privacy Policy Pro</p>
+        <p>Contact Information: amirulirfan.utm@gmail.com | +6011 6563 3995</p>
+      </div>
+      <!-- End Report Footer -->
+
+      <div style="text-align: center">
+        <a id="retakeBtn" class="btn-secondary" href="assessment.html"
+          >Retake Test</a
+        >
+        <a
+          id="printBtn"
+          class="btn-primary"
+          href="javascript:void(0)"
+          onclick="window.print()"
+          >Print Report</a
+        >
+      </div>
     </div>
+    <!-- End Report Container -->
   </body>
 </html>

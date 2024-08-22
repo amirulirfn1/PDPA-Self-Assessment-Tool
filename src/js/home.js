@@ -49,23 +49,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-//change-pic
-document.addEventListener("DOMContentLoaded", function() {
+// Change image functionality for rotating images
+document.addEventListener("DOMContentLoaded", function () {
   const images = [
-    'C:\\Users\\dalil\\OneDrive\\Documents\\GitHub\\PDPA-Self-Assessment-Tool\\src\\img\\cta-bg.jpg',
-    'C:\\Users\\dalil\\OneDrive\\Documents\\GitHub\\PDPA-Self-Assessment-Tool\\src\\img\\pdpapic2.png',
-    'C:\\Users\\dalil\\OneDrive\\Documents\\GitHub\\PDPA-Self-Assessment-Tool\\src\\img\\pdpapic3.png'
+    "..\\img\\cta-bg.jpg",
+    "..\\img\\pdpapic2.png",
+    "..\\img\\pdpapic3.png",
   ];
 
   let currentIndex = 0;
-  const imageElement = document.querySelector('.change-pic img');
+  const imageElement = document.querySelector(".change-pic img");
 
-  function changeImage() {
-    currentIndex = (currentIndex + 1) % images.length;
-    imageElement.src = images[currentIndex];
-    imageElement.classList.add('active');
+  // Check if the image element exists
+  if (imageElement) {
+    function changeImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      imageElement.src = images[currentIndex];
+      imageElement.classList.add("active");
+    }
+
+    setInterval(changeImage, 3000); // Change image every 3 seconds
+  } else {
+    console.error("Image element not found. Ensure the selector is correct.");
   }
-
-  setInterval(changeImage, 3000); // Change image every 3 seconds
 });
-

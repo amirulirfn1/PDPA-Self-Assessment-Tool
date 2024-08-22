@@ -10,11 +10,26 @@
   background-size: cover;
   //background: $secondary;
 
-
   .container {
     //display: flex;
     //justify-content: center;
     padding-top: 72px;
+  }
+
+  #hero2 {
+    width: 100%;
+    height: 100vh;
+    background-image: url("../img/cta-bg.jpg");
+    //background-color: #0056b3;
+    background-position: center;
+    background-size: cover;
+    //background: $secondary;
+
+    .container {
+      //display: flex;
+      //justify-content: center;
+      padding-top: 72px;
+    }
   }
 
   h1 {
@@ -181,7 +196,7 @@
   }
 
   //changing pic in home page
-  .change-pic{
+  .change-pic {
     position: relative;
     width: 100%;
     height: auto;
@@ -192,7 +207,7 @@
     align-items: center;
   }
 
-  .change-pic img{
+  .change-pic img {
     width: 100%;
     height: auto;
     max-width: 100%;
@@ -201,8 +216,8 @@
     transition: opacity 1s ease-in-out;
   }
 
-  .change-pic img.active{
-    opacity:1;
+  .change-pic img.active {
+    opacity: 1;
   }
 
   /* Media query for mobile devices */
@@ -211,9 +226,6 @@
       width: 100%;
       height: auto;
     }
-    
-    
-    
   }
 }
 
@@ -225,5 +237,3 @@
     transform: translateY(-10px);
   }
 }
-
-

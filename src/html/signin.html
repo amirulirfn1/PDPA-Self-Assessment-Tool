@@ -8,24 +8,74 @@
     <meta content="" name="keywords" />
     <link href="../img/favicon.png" rel="icon" />
     <link href="../img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
       rel="stylesheet"
     />
+
+    <!-- External CSS File -->
+    <link href="../scss/style.scss" rel="stylesheet" />
+
     <style>
+      /* Inline Styles for quick adjustments */
       .btn-primary {
-        background-color: skyblue;
+        background-color: #007bff;
         color: white;
+        width: 100%;
         display: block;
-        margin: 0 auto;
+        margin: 20px 0;
+      }
+
+      .signin-container {
+        margin-top: 100px;
+      }
+
+      .form-control {
+        border-radius: 30px;
+        padding: 15px;
+        font-size: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .signin .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 30px;
+      }
+
+      .signin .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+      }
+
+      .signin p {
+        margin: 20px 0 0;
+      }
+
+      .signin p a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      .signin p a:hover {
+        color: #0056b3;
+        text-decoration: underline;
       }
     </style>
   </head>
+
   <body>
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top header-inner-pages">
       <div class="container d-flex align-items-center">
-        <h1 class="logo me-auto"><a href="index.html">Sign In</a></h1>
+        <h1 class="logo me-auto">
+          <a href="index.html">Privacy Policy Pro</a>
+        </h1>
         <nav id="navbar" class="navbar">
           <ul>
             <li>
@@ -53,10 +103,10 @@
       </div>
     </section>
 
-    <div class="container mt-5">
+    <div class="container signin-container">
       <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-8">
-          <div class="border p-3">
+          <div class="border p-4 shadow-sm rounded">
             <form id="loginForm">
               <div class="form-group">
                 <label for="email">Email:</label>
@@ -64,9 +114,9 @@
                   type="email"
                   class="form-control"
                   name="email"
-                  placeholder="Enter Email"
+                  placeholder="Enter your email"
                   required
-                /><br />
+                />
               </div>
               <div class="form-group">
                 <label for="password">Password:</label>
@@ -74,9 +124,9 @@
                   type="password"
                   class="form-control"
                   name="password"
-                  placeholder="Enter Password"
+                  placeholder="Enter your password"
                   required
-                /><br />
+                />
               </div>
               <button
                 type="submit"
@@ -91,9 +141,12 @@
       </div>
     </div>
 
-    <div class="container mt-3 signin text-center">
+    <div class="container signin text-center mt-4">
       <p>Not Yet Registered? <a href="signup.html">Sign Up</a></p>
-      <p><a href="forgotpassword.html">Forgot Password</a></p>
+      <p><a href="forgotpassword.html">Forgot Password?</a></p>
     </div>
+
+    <!-- Optional JavaScript and other scripts -->
+    <!-- <script src="../js/main.js"></script> -->
   </body>
 </html>

@@ -18,10 +18,12 @@
     />
     <style>
       .btn-primary {
-        background-color: skyblue;
+        background-color: #007bff;
         color: white;
+        width: 100%;
         display: block;
-        margin: 0 auto;
+        margin: 20px 0;
+        border-radius: 30px;
       }
       .password-toggle {
         position: relative;
@@ -32,6 +34,28 @@
         right: 10px;
         transform: translateY(-50%);
         cursor: pointer;
+      }
+      .progress-bar {
+        height: 5px;
+        background: green;
+        margin-top: 5px;
+        border-radius: 3px;
+      }
+      .strength-weak {
+        width: 20%;
+        background-color: red;
+      }
+      .strength-fair {
+        width: 40%;
+        background-color: orange;
+      }
+      .strength-good {
+        width: 60%;
+        background-color: yellow;
+      }
+      .strength-strong {
+        width: 100%;
+        background-color: green;
       }
     </style>
   </head>
@@ -69,7 +93,7 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 col-sm-12">
-          <div class="border p-3">
+          <div class="border p-3 shadow-sm rounded">
             <form id="signupForm">
               <div class="row">
                 <div class="col-md-6">
@@ -145,7 +169,9 @@
                       placeholder="Enter Password"
                       required
                     />
-                    <i class="fas fa-eye" id="togglePassword1"></i><br />
+                    <i class="fas fa-eye" id="togglePassword1"></i>
+                    <div class="progress-bar strength-meter"></div>
+                    <br />
                   </div>
                   <div class="form-group password-toggle">
                     <label for="password2">Repeat Password:</label>
@@ -186,6 +212,7 @@
       const togglePassword2 = document.querySelector("#togglePassword2");
       const password1 = document.querySelector('input[name="password"]');
       const password2 = document.querySelector('input[name="password2"]');
+      const strengthMeter = document.querySelector(".strength-meter");
 
       togglePassword1.addEventListener("click", function () {
         const type =
@@ -200,6 +227,106 @@
         password2.setAttribute("type", type);
         this.classList.toggle("fa-eye-slash");
       });
+
+      password1.addEventListener("input", updateStrengthMeter);
+
+      function updateStrengthMeter() {
+        const weaknesses = calculatePasswordStrength(password1.value);
+        let strength =
+          100 -
+          weaknesses.reduce(
+            (acc, weakness) => acc + (weakness ? weakness.deduction : 0),
+            0
+          );
+
+        strengthMeter.style.width = strength + "%";
+        if (strength < 40) {
+          strengthMeter.className = "progress-bar strength-weak";
+        } else if (strength < 60) {
+          strengthMeter.className = "progress-bar strength-fair";
+        } else if (strength < 80) {
+          strengthMeter.className = "progress-bar strength-good";
+        } else {
+          strengthMeter.className = "progress-bar strength-strong";
+        }
+      }
+
+      function calculatePasswordStrength(password) {
+        const weaknesses = [];
+        weaknesses.push(lengthWeakness(password));
+        weaknesses.push(lowercaseWeakness(password));
+        weaknesses.push(uppercaseWeakness(password));
+        weaknesses.push(numberWeakness(password));
+        weaknesses.push(specialCharacterWeakness(password));
+        return weaknesses.filter((weakness) => weakness !== undefined);
+      }
+
+      function lengthWeakness(password) {
+        const length = password.length;
+
+        if (length <= 5) {
+          return {
+            message: "Your password is too short",
+            deduction: 40,
+          };
+        }
+
+        if (length <= 10) {
+          return {
+            message: "Your password could be longer",
+            deduction: 15,
+          };
+        }
+
+        return null;
+      }
+
+      function characterTypeWeakness(password, regex, type) {
+        const matches = password.match(regex) || [];
+        if (matches.length === 0) {
+          return {
+            message: `Your password has no ${type}`,
+            deduction: 20,
+          };
+        }
+
+        if (matches.length <= 2) {
+          return {
+            message: `Your password could use more ${type}`,
+            deduction: 5,
+          };
+        }
+
+        return null;
+      }
+
+      function lowercaseWeakness(password) {
+        return characterTypeWeakness(
+          password,
+          /[a-z]/g,
+          "lowercase characters"
+        );
+      }
+
+      function uppercaseWeakness(password) {
+        return characterTypeWeakness(
+          password,
+          /[A-Z]/g,
+          "uppercase characters"
+        );
+      }
+
+      function numberWeakness(password) {
+        return characterTypeWeakness(password, /[0-9]/g, "numbers");
+      }
+
+      function specialCharacterWeakness(password) {
+        return characterTypeWeakness(
+          password,
+          /[^a-zA-Z0-9]/g,
+          "special characters"
+        );
+      }
     </script>
   </body>
 </html>

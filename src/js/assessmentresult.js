@@ -36,6 +36,29 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// Function to load user details
+const loadUserDetails = (userId) => {
+  const userDocRef = doc(db, "users", userId);
+  getDoc(userDocRef)
+    .then((docSnap) => {
+      if (docSnap.exists()) {
+        const userData = docSnap.data().personalDetails;
+        document.getElementById("companyName").textContent =
+          userData.organization;
+        document.getElementById("userInCharge").textContent = userData.fullname;
+        document.getElementById("userTitle").textContent = userData.title;
+        document.getElementById("userAddress").textContent = userData.address;
+        document.getElementById("userEmail").textContent = userData.email;
+        document.getElementById("userPhone").textContent = userData.phoneNumber;
+      } else {
+        console.error("No such document!");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching user details: ", error);
+    });
+};
+
 // Function to calculate and display the assessment result
 const calculateAssessmentResult = (userId) => {
   const q = query(collection(db, "assessments"), where("userId", "==", userId));
@@ -126,11 +149,12 @@ const displayResults = (score, improvementAreas) => {
   }
 };
 
-// Check authentication state and calculate the assessment result
+// Check authentication state, load user details, and calculate the assessment result
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const userId = user.uid;
-    calculateAssessmentResult(userId);
+    loadUserDetails(userId); // Load company and user details
+    calculateAssessmentResult(userId); // Calculate and display assessment results
   } else {
     window.location.href = "/signin.html";
   }

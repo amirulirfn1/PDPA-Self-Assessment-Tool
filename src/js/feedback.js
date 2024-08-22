@@ -22,16 +22,20 @@ feedbackForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const feedback = feedbackForm.feedback.value;
+  const rating = document.querySelector('input[name="rating"]:checked').value;
+  const category = feedbackForm.category.value;
   const userId = main.auth.currentUser.uid;
 
   main
     .addDoc(main.collection(main.db, "feedback"), {
       userId: userId,
       feedback: feedback,
+      rating: rating,
+      category: category,
       timestamp: new Date().toISOString(),
     })
     .then(() => {
-      alert("Feedback submitted successfully");
+      document.getElementById("successMessage").style.display = "block";
       feedbackForm.reset();
     })
     .catch((err) => {

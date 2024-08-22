@@ -20,43 +20,36 @@
 
     <!-- Bootstrap CSS -->
     <link
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
     />
 
-    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <!-- AOS (Animate on Scroll) CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link href="../scss/style.scss" rel="stylesheet" />
+
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- AOS (Animate on Scroll) CSS and JS -->
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
-    rel="stylesheet"
-    />
+    <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-
-    <!-- Initialize AOS -->
     <script>
-    AOS.init();
+      AOS.init();
     </script>
-
-  <script src="/src/js/home.js"></script>
-
   </head>
-  <style>
-    #signoutbtn:hover {
-      cursor: pointer;
-    }
-  </style>
 
   <body>
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top">
       <div class="container d-flex align-items-center">
         <h1 class="logo me-auto"><a href="home.html">Privacy Policy Pro</a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html" class="logo me-auto"><img src="../img/logo.png" alt="" class="img-fluid"></a>-->
 
         <nav id="navbar" class="navbar">
           <ul>
@@ -83,7 +76,6 @@
                 </li>
               </ul>
             </li>
-            <!-- <li><a class="nav-link scrollto" href="#team">Forum</a></li> -->
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
@@ -102,25 +94,26 @@
             data-aos-delay="200"
           >
             <h1>PDPA ACT GUIDELINES</h1>
-            <h2>Do the quiz now!</h2>
-            <div class="row">
-              <div class="boxhome1">
-                <a class="getstarted1" href="./assessment.html"
-                  >Self Assessment Tool</a
-                >
-              </div>
-              <div class="boxhome2 ">
-                <a class="getstarted2 scrollto" href="./feedback.html"
-                  >Give Feedback</a
-                >
-              </div>
+            <h2>Complete the quiz now!</h2>
+            <div class="d-flex">
+              <a href="./assessment.html" class="btn btn-primary btn-lg me-2"
+                >Self Assessment Tool</a
+              >
+              <a href="./feedback.html" class="btn btn-secondary btn-lg"
+                >Give Feedback</a
+              >
             </div>
           </div>
           <div
-            class="col-lg-6 order-1 order-lg-2 hero-img change-pic"
+            class="col-lg-6 order-1 order-lg-2 hero-img"
+            data-aos="zoom-in"
+            data-aos-delay="200"
           >
-          <img class="pdpapic1" src="\src\img\cta-bg.jpg" alt="">
-            
+            <img
+              src="../img/hero-img.png"
+              class="img-fluid animated"
+              alt="PDPA Assessment Tool"
+            />
           </div>
         </div>
       </div>
@@ -128,7 +121,7 @@
     <!-- End Hero -->
 
     <main id="main">
-      <!-- ======= About Us Section ======= -->
+      <!-- ======= Guidelines Section ======= -->
       <section id="about" class="about">
         <div class="container" data-aos="fade-up">
           <div class="section-title">
@@ -136,12 +129,12 @@
             <p>Trusted sources to learn about Malaysia's PDPA Act</p>
           </div>
 
-          <div class="row content" style="padding-bottom: 100px">
+          <div class="row content">
             <div class="col-lg-6">
               <img
-                src="\src\img\data1.jpg"
-                alt=""
-                style="width: 600px; height: 100%"
+                src="../img/data1.jpg"
+                class="img-fluid"
+                alt="Malaysian Litigator"
               />
             </div>
             <div class="col-lg-6 pt-4 pt-lg-0">
@@ -157,21 +150,14 @@
               </p>
               <a
                 href="https://malaysianlitigator.com/2020/06/29/personal-data-protection-act-2010-checklist/"
-                class="btn-learn-more"
+                class="btn btn-outline-primary"
                 >Learn More</a
               >
             </div>
           </div>
 
-          <div class="row content">
-            <div class="col-lg-6">
-              <img
-                src="\src\img\data2.jpg"
-                alt=""
-                style="width: 600px; height: 100%"
-              />
-            </div>
-            <div class="col-lg-6 pt-4 pt-lg-0">
+          <div class="row content mt-5">
+            <div class="col-lg-6 order-2 order-lg-1">
               <h3>Azmilaw</h3>
               <p>
                 This resource details the seven fundamental principles of the
@@ -181,21 +167,25 @@
                 with the Security, Retention, and Data Integrity principles.
                 Practical steps for businesses include establishing access
                 control, maintaining proper ID and password management, and
-                ensuring the secure storage and disposal of documents​
+                ensuring the secure storage and disposal of documents​.
               </p>
               <a
                 href="https://www.azmilaw.com/insights/six-6-things-your-business-need-to-know-on-personal-data-protection-in-malaysia/"
-                class="btn-learn-more"
+                class="btn btn-outline-primary"
                 >Learn More</a
               >
             </div>
+            <div class="col-lg-6 order-1 order-lg-2">
+              <img src="../img/data2.jpg" class="img-fluid" alt="Azmilaw" />
+            </div>
           </div>
-          <div class="row content">
+
+          <div class="row content mt-5">
             <div class="col-lg-6">
               <img
-                src="\src\img\data3.jpg"
-                alt=""
-                style="width: 600px; height: 100%"
+                src="../img/data3.jpg"
+                class="img-fluid"
+                alt="Data Guidance"
               />
             </div>
             <div class="col-lg-6 pt-4 pt-lg-0">
@@ -211,14 +201,14 @@
               </p>
               <a
                 href="https://www.dataguidance.com/notes/malaysia-data-protection-overview"
-                class="btn-learn-more"
+                class="btn btn-outline-primary"
                 >Learn More</a
               >
             </div>
           </div>
         </div>
       </section>
-      <!-- End About Us Section -->
+      <!-- End Guidelines Section -->
 
       <!-- ======= Frequently Asked Questions Section ======= -->
       <section id="faq" class="faq section-bg">
@@ -262,14 +252,14 @@
                 <a
                   data-bs-toggle="collapse"
                   data-bs-target="#faq-list-2"
-                  class="collapse show"
+                  class="collapsed"
                   >Why is compliance with the PDPA Act important?
                   <i class="bx bx-chevron-down icon-show"></i
                   ><i class="bx bx-chevron-up icon-close"></i
                 ></a>
                 <div
                   id="faq-list-2"
-                  class="collapse show"
+                  class="collapse"
                   data-bs-parent=".faq-list"
                 >
                   <p>
@@ -287,14 +277,14 @@
                 <a
                   data-bs-toggle="collapse"
                   data-bs-target="#faq-list-3"
-                  class="collapse"
+                  class="collapsed"
                   >How does the self-assessment tool work?
                   <i class="bx bx-chevron-down icon-show"></i
                   ><i class="bx bx-chevron-up icon-close"></i
                 ></a>
                 <div
                   id="faq-list-3"
-                  class="collapse show"
+                  class="collapse"
                   data-bs-parent=".faq-list"
                 >
                   <p>
@@ -311,14 +301,14 @@
                 <a
                   data-bs-toggle="collapse"
                   data-bs-target="#faq-list-4"
-                  class="collapse"
+                  class="collapsed"
                   >How can I access my assessment results?
                   <i class="bx bx-chevron-down icon-show"></i
                   ><i class="bx bx-chevron-up icon-close"></i
                 ></a>
                 <div
                   id="faq-list-4"
-                  class="collapse show"
+                  class="collapse"
                   data-bs-parent=".faq-list"
                 >
                   <p>
@@ -342,7 +332,7 @@
                 ></a>
                 <div
                   id="faq-list-5"
-                  class="collapse show"
+                  class="collapse"
                   data-bs-parent=".faq-list"
                 >
                   <p>
