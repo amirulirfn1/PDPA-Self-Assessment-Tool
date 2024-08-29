@@ -88,26 +88,18 @@
         margin-bottom: 20px;
       }
 
-      .content table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-      }
-
-      .content table,
-      th,
-      td {
+      .question-item {
+        background-color: #f9f9f9;
         border: 1px solid #ddd;
-        padding: 8px;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
       }
 
-      .content th {
-        background-color: #333333;
-        color: white;
-      }
-
-      .content td {
-        color: #333;
+      .pagination {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
       }
 
       .btn {
@@ -128,48 +120,47 @@
         background-color: #006666;
       }
 
-      .content form {
+      #editQuestionForm {
+        display: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 90%;
         max-width: 400px;
-        margin: auto;
       }
 
-      .content form label {
-        margin-bottom: 10px;
-        font-weight: bold;
-        display: block;
-      }
-
-      .content form input[type="text"],
-      .content form input[type="email"],
-      .content form textarea {
+      #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        padding: 8px;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+        z-index: 999;
+      }
+
+      #editQuestionForm label {
+        color: #fff;
+      }
+
+      #editQuestionForm input,
+      #editQuestionForm textarea {
+        width: 100%;
+        padding: 10px;
         margin-bottom: 10px;
-        border-radius: 3px;
+        border-radius: 5px;
         border: 1px solid #ccc;
       }
 
-      .content form .btn {
-        margin-top: 20px;
-      }
-
-      .question-item {
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 15px;
-        margin-bottom: 15px;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          flex-direction: column;
-        }
-
-        .sidebar {
-          height: auto;
-          padding-bottom: 20px;
-        }
+      #editQuestionForm .btn {
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -194,13 +185,18 @@
           ><i class="bi bi-box-arrow-right"></i>Logout</a
         >
       </div>
+
       <div class="content">
         <div class="content-inner">
           <h2>Questions</h2>
           <div id="questionsContainer"></div>
-          <button class="btn" onclick="addQuestion()">Add Question</button>
 
-          <form id="editQuestionForm" style="display: none">
+          <div class="pagination">
+            <button class="btn" id="prevPageBtn" disabled>Previous</button>
+            <button class="btn" id="nextPageBtn">Next</button>
+          </div>
+
+          <form id="editQuestionForm">
             <h2>Edit Question</h2>
             <label for="category">Category:</label>
             <input type="text" id="category" name="category" />
@@ -222,6 +218,7 @@
               Cancel
             </button>
           </form>
+          <div id="overlay"></div>
         </div>
       </div>
     </div>

@@ -1,34 +1,52 @@
 const main = require("./main.js");
 
 let questionId; // Store the question ID here
+let currentPage = 1;
+const questionsPerPage = 5;
+let questions = [];
 
 // Function to load all questions
 const loadQuestions = () => {
   main
     .getDocs(main.collection(main.db, "questions"))
     .then((querySnapshot) => {
-      const questionsContainer = document.getElementById("questionsContainer");
-      questionsContainer.innerHTML = "";
-
+      questions = [];
       querySnapshot.forEach((doc) => {
-        const questionData = doc.data();
-        const questionItem = document.createElement("div");
-        questionItem.className = "question-item";
-        questionItem.innerHTML = `
-          <p><strong>Category:</strong> ${questionData.category}</p>
-          <p><strong>Description:</strong> ${questionData.description}</p>
-          <p><strong>Question:</strong> ${questionData.question}</p>
-          <p><strong>Suggestion:</strong> ${questionData.suggestion}</p>
-          <p><strong>Importance:</strong> ${questionData.importance}</p>
-          <button class="btn" onclick="editQuestion('${doc.id}')">Edit</button>
-          <button class="btn" onclick="deleteQuestion('${doc.id}')">Delete</button>
-        `;
-        questionsContainer.appendChild(questionItem);
+        questions.push({ id: doc.id, data: doc.data() });
       });
+      displayQuestions();
     })
     .catch((error) => {
       console.error("Error fetching questions: ", error);
     });
+};
+
+// Function to display questions for the current page
+const displayQuestions = () => {
+  const questionsContainer = document.getElementById("questionsContainer");
+  questionsContainer.innerHTML = "";
+
+  const start = (currentPage - 1) * questionsPerPage;
+  const end = start + questionsPerPage;
+  const questionsToShow = questions.slice(start, end);
+
+  questionsToShow.forEach(({ id, data }) => {
+    const questionItem = document.createElement("div");
+    questionItem.className = "question-item";
+    questionItem.innerHTML = `
+      <p><strong>Category:</strong> ${data.category}</p>
+      <p><strong>Description:</strong> ${data.description}</p>
+      <p><strong>Question:</strong> ${data.question}</p>
+      <p><strong>Suggestion:</strong> ${data.suggestion}</p>
+      <p><strong>Importance:</strong> ${data.importance}</p>
+      <button class="btn" onclick="editQuestion('${id}')">Edit</button>
+      <button class="btn" onclick="deleteQuestion('${id}')">Delete</button>
+    `;
+    questionsContainer.appendChild(questionItem);
+  });
+
+  document.getElementById("prevPageBtn").disabled = currentPage === 1;
+  document.getElementById("nextPageBtn").disabled = end >= questions.length;
 };
 
 // Function to load a specific question for editing
@@ -56,6 +74,7 @@ const populateForm = (data) => {
   document.querySelector("#suggestion").value = data.suggestion || "";
   document.querySelector("#importance").value = data.importance || "";
   document.querySelector("#editQuestionForm").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
 };
 
 // Function to handle form submission
@@ -76,7 +95,7 @@ const handleFormSubmit = (event) => {
       .updateDoc(main.doc(main.db, "questions", questionId), updatedData)
       .then(() => {
         alert("Question updated successfully");
-        document.querySelector("#editQuestionForm").style.display = "none";
+        closeEditModal();
         loadQuestions();
       })
       .catch((error) => {
@@ -88,7 +107,7 @@ const handleFormSubmit = (event) => {
       .addDoc(main.collection(main.db, "questions"), updatedData)
       .then(() => {
         alert("Question added successfully");
-        document.querySelector("#editQuestionForm").style.display = "none";
+        closeEditModal();
         loadQuestions();
       })
       .catch((error) => {
@@ -135,13 +154,35 @@ window.deleteQuestion = (id) => {
 window.addQuestion = () => {
   questionId = null;
   document.querySelector("#editQuestionForm").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
   document.querySelector("#editQuestionForm").reset();
 };
 
 // Function to handle cancel button click
 window.cancelEdit = () => {
-  document.querySelector("#editQuestionForm").style.display = "none";
+  closeEditModal();
 };
+
+// Function to close the edit modal
+const closeEditModal = () => {
+  document.querySelector("#editQuestionForm").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+};
+
+// Pagination handling
+document.getElementById("prevPageBtn").addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
+    displayQuestions();
+  }
+});
+
+document.getElementById("nextPageBtn").addEventListener("click", () => {
+  if (currentPage * questionsPerPage < questions.length) {
+    currentPage++;
+    displayQuestions();
+  }
+});
 
 // Check authentication state and load the question data
 main.onAuthStateChanged(main.auth, (user) => {

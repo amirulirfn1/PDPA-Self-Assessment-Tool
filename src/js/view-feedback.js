@@ -1,6 +1,6 @@
 const main = require("./main.js");
 
-// Function to load feedbacks
+// Function to load feedbacks with optional date range filtering
 const loadFeedbacks = (startDate, endDate) => {
   let feedbackQuery = main.collection(main.db, "feedback");
 
@@ -18,18 +18,22 @@ const loadFeedbacks = (startDate, endDate) => {
     .getDocs(feedbackQuery)
     .then((querySnapshot) => {
       const feedbackContainer = document.getElementById("feedbackContainer");
-      feedbackContainer.innerHTML = "";
+      feedbackContainer.innerHTML = ""; // Clear previous content
 
       querySnapshot.forEach((doc) => {
         const feedbackData = doc.data();
         const feedbackItem = document.createElement("div");
         feedbackItem.className = "feedback-item";
+
         feedbackItem.innerHTML = `
+          <p><strong>Category:</strong> ${feedbackData.category}</p>
+          <p><strong>Rating:</strong> ${feedbackData.rating}</p>
           <p><strong>Feedback:</strong> ${feedbackData.feedback}</p>
           <p><strong>Date:</strong> ${new Date(
             feedbackData.timestamp.seconds * 1000
           ).toLocaleString()}</p>
         `;
+
         feedbackContainer.appendChild(feedbackItem);
       });
     })
@@ -70,7 +74,7 @@ main.onAuthStateChanged(main.auth, (user) => {
   }
 });
 
-// Attach form submit event listener
+// Attach form submit event listener for filtering feedbacks
 document
   .querySelector("#filterForm")
   .addEventListener("submit", handleFormSubmit);
