@@ -29,6 +29,8 @@ import {
   signOut,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  RecaptchaVerifier,
+  PhoneAuthProvider, // Import PhoneAuthProvider for MFA
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { Loader } from "@googlemaps/js-api-loader";
@@ -63,11 +65,10 @@ const loader = new Loader({
   version: "weekly",
 });
 
-// Export necessary functions from Firebase
+// Export necessary functions and Firebase objects
 export {
   db,
   auth,
-  auth2,
   storage,
   collection,
   usersDB,
@@ -89,6 +90,8 @@ export {
   signOut,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  RecaptchaVerifier, // Export RecaptchaVerifier for use in MFA
+  PhoneAuthProvider, // Export PhoneAuthProvider for use in MFA
   loader,
 };
 

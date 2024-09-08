@@ -15,7 +15,6 @@ import {
   updateDoc,
   doc,
   query,
-  where,
   onSnapshot,
   getDoc,
 } from "firebase/firestore";
@@ -90,6 +89,7 @@ function showQuestion() {
 
   console.log("Displaying question:", currentQuestion);
 
+  // Add a toggle arrow for description and description section
   questionContainer.innerHTML = `
     <div class="question-header">
       <h4>Question ${questionNumber} of ${questions.length}</h4>
@@ -97,6 +97,10 @@ function showQuestion() {
     </div>
     <div class="question-body">
       <p>${currentQuestion.data.question}</p>
+      <button class="toggle-description" id="toggleDescriptionBtn">▼ Show Description</button>
+      <div class="description" id="description" style="display: none;">
+        <p>${currentQuestion.data.description}</p>
+      </div>
       <ul class="answer-choice" style="list-style-type: none !important">
         <li class="form-group">
           <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-yes" value="Yes" required />
@@ -117,6 +121,18 @@ function showQuestion() {
       </ul>
     </div>
   `;
+
+  // Toggle Description visibility
+  const toggleDescriptionBtn = document.getElementById("toggleDescriptionBtn");
+  const description = document.getElementById("description");
+
+  toggleDescriptionBtn.addEventListener("click", () => {
+    const isVisible = description.style.display === "block";
+    description.style.display = isVisible ? "none" : "block";
+    toggleDescriptionBtn.textContent = isVisible
+      ? "▼ Show Description"
+      : "▲ Hide Description";
+  });
 
   prevBtn.style.visibility = currentQuestionIndex === 0 ? "hidden" : "visible";
   nextBtn.style.display =
