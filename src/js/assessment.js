@@ -14,9 +14,6 @@ import {
   addDoc,
   updateDoc,
   doc,
-  query,
-  onSnapshot,
-  getDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
@@ -49,16 +46,20 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+// Function to load questions from Firestore
 async function loadQuestions() {
   try {
-    const q = query(collection(db, "questions"));
+    const q = collection(db, "questions");
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
       const questionData = doc.data();
       const questionId = doc.id;
-      console.log("Question fetched:", questionData);
-      questions.push({ id: questionId, data: questionData });
+      questions.push({
+        id: questionId,
+        data: questionData,
+        selectedAnswer: null,
+      });
     });
 
     if (questions.length > 0) {
@@ -72,6 +73,7 @@ async function loadQuestions() {
   }
 }
 
+// Function to show the current question and its options
 function showQuestion() {
   const questionContainer = document.getElementById("questionContainer");
   if (!questionContainer) {
@@ -87,9 +89,6 @@ function showQuestion() {
   const currentQuestion = questions[currentQuestionIndex];
   const questionNumber = currentQuestionIndex + 1;
 
-  console.log("Displaying question:", currentQuestion);
-
-  // Add a toggle arrow for description and description section
   questionContainer.innerHTML = `
     <div class="question-header">
       <h4>Question ${questionNumber} of ${questions.length}</h4>
@@ -97,25 +96,25 @@ function showQuestion() {
     </div>
     <div class="question-body">
       <p>${currentQuestion.data.question}</p>
-      <button class="toggle-description" id="toggleDescriptionBtn">▼ Show Description</button>
+      <button class="toggle-description" id="toggleDescriptionBtn" type="button">▼ Show Description</button>
       <div class="description" id="description" style="display: none;">
         <p>${currentQuestion.data.description}</p>
       </div>
       <ul class="answer-choice" style="list-style-type: none !important">
         <li class="form-group">
-          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-yes" value="Yes" required />
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-yes" value="Yes" />
           <label for="${currentQuestion.id}-yes">Yes</label>
         </li>
         <li class="form-group">
-          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-partially" value="Partially" required />
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-partially" value="Partially" />
           <label for="${currentQuestion.id}-partially">Partially</label>
         </li>
         <li class="form-group">
-          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-no" value="No" required />
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-no" value="No" />
           <label for="${currentQuestion.id}-no">No</label>
         </li>
         <li class="form-group">
-          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-notapplicable" value="Not Applicable" required />
+          <input type="radio" name="${currentQuestion.id}" id="${currentQuestion.id}-notapplicable" value="Not Applicable" />
           <label for="${currentQuestion.id}-notapplicable">Not Applicable</label>
         </li>
       </ul>
@@ -134,13 +133,26 @@ function showQuestion() {
       : "▲ Hide Description";
   });
 
+  // Repopulate saved answer
+  if (currentQuestion.selectedAnswer) {
+    const savedAnswerRadio = document.getElementById(
+      `${currentQuestion.id}-${currentQuestion.selectedAnswer.toLowerCase()}`
+    );
+    if (savedAnswerRadio) {
+      savedAnswerRadio.checked = true;
+    }
+  }
+
+  // Update button visibility
+  if (currentQuestionIndex === questions.length - 1) {
+    submitBtn.classList.remove("d-none");
+    nextBtn.classList.add("d-none");
+  } else {
+    submitBtn.classList.add("d-none");
+    nextBtn.classList.remove("d-none");
+  }
+
   prevBtn.style.visibility = currentQuestionIndex === 0 ? "hidden" : "visible";
-  nextBtn.style.display =
-    currentQuestionIndex === questions.length - 1 ? "none" : "inline-block";
-  submitBtn.classList.toggle(
-    "d-none",
-    currentQuestionIndex !== questions.length - 1
-  );
 
   // Update progress bar
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
@@ -151,6 +163,7 @@ function showQuestion() {
   updateProgressIndicator();
 }
 
+// Function to update the progress indicator
 function updateProgressIndicator() {
   const progressIndicator = document.getElementById("progressIndicator");
 
@@ -167,7 +180,7 @@ function updateProgressIndicator() {
     indicator.classList.add(
       completedQuestions.has(question.id) ? "completed" : "pending"
     );
-    indicator.setAttribute("data-index", index + 1); // Attach the question number
+    indicator.setAttribute("data-index", index + 1);
 
     // Make the dots clickable
     indicator.addEventListener("click", () => {
@@ -180,6 +193,15 @@ function updateProgressIndicator() {
 }
 
 document.getElementById("prevBtn").addEventListener("click", () => {
+  const currentQuestion = questions[currentQuestionIndex];
+  const selectedOption = document.querySelector(
+    `input[name="${currentQuestion.id}"]:checked`
+  );
+
+  if (selectedOption) {
+    currentQuestion.selectedAnswer = selectedOption.value; // Save the selected answer before going back
+  }
+
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
     showQuestion();
@@ -187,17 +209,24 @@ document.getElementById("prevBtn").addEventListener("click", () => {
 });
 
 document.getElementById("nextBtn").addEventListener("click", () => {
+  const currentQuestion = questions[currentQuestionIndex];
+  const selectedOption = document.querySelector(
+    `input[name="${currentQuestion.id}"]:checked`
+  );
+
+  // Make sure the user has selected an answer
+  if (!selectedOption) {
+    alert("Please select an answer before proceeding.");
+    return;
+  }
+
+  // Store the selected answer
+  currentQuestion.selectedAnswer = selectedOption.value;
+
+  completedQuestions.add(currentQuestion.id);
+
+  // Move to the next question if it's not the last one
   if (currentQuestionIndex < questions.length - 1) {
-    // Mark the current question as completed before moving to the next
-    const currentQuestion = questions[currentQuestionIndex];
-    const selectedOption = document.querySelector(
-      `input[name="${currentQuestion.id}"]:checked`
-    );
-
-    if (selectedOption) {
-      completedQuestions.add(currentQuestion.id);
-    }
-
     currentQuestionIndex++;
     showQuestion();
   }
@@ -212,39 +241,28 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.disabled = true;
 
     const responses = {};
-    const formData = new FormData(assessmentForm);
-    formData.forEach((value, key) => {
-      responses[key] = value;
+    questions.forEach((question) => {
+      responses[question.id] = question.selectedAnswer || "No answer";
     });
 
     const userId = auth.currentUser.uid;
     let score = 0;
     const improvementAreas = [];
-    let totalImportance = 0;
 
     // Calculate score and determine improvement areas
     for (const questionId in responses) {
       const response = responses[questionId];
-      const questionDoc = await getDoc(doc(db, "questions", questionId));
-      const questionData = questionDoc.data();
-      const weight = parseInt(questionData.importance, 10) || 1;
-
-      if (response !== "Not Applicable") {
-        totalImportance += weight;
-      }
 
       if (response === "Yes") {
-        score += 2 * weight;
+        score += 2; // Full score for "Yes"
       } else if (response === "Partially") {
-        score += 1 * weight;
+        score += 1; // Partial score for "Partially"
       } else if (response === "No") {
-        improvementAreas.push(questionId);
+        improvementAreas.push(questionId); // Log areas that need improvement
       }
     }
 
-    const normalizedScore = totalImportance
-      ? (score / (2 * totalImportance)) * 100
-      : 0;
+    const normalizedScore = (score / (questions.length * 2)) * 100;
 
     try {
       await addDoc(collection(db, "assessments"), {
@@ -261,7 +279,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Assessment submitted successfully");
       window.location.href = "/assessmentresult.html";
     } catch (error) {
-      alert(error.message);
+      console.error("Error saving assessment: ", error.message);
+      alert("Error submitting assessment.");
       submitBtn.disabled = false;
     }
   });

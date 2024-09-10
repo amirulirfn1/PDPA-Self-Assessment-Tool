@@ -59,17 +59,17 @@ const loadUserDetails = (userId) => {
     });
 };
 
-// Function to calculate and display the assessment result
+// Function to calculate and display the assessment result (excluding "Not Applicable")
 const calculateAssessmentResult = (userId) => {
   const q = query(collection(db, "assessments"), where("userId", "==", userId));
 
   getDocs(q)
     .then((querySnapshot) => {
       let totalScore = 0;
-      let totalImportance = 0;
+      let applicableQuestions = 0; // Only count applicable questions (exclude "Not Applicable")
       const improvementAreas = [];
 
-      const promises = [];
+      const promises = []; // Track promises to get question data
 
       querySnapshot.forEach((assessmentDoc) => {
         const assessment = assessmentDoc.data();
@@ -77,26 +77,29 @@ const calculateAssessmentResult = (userId) => {
 
         for (const questionId in responses) {
           const response = responses[questionId];
+
+          // Fetch question details to display improvement suggestion if necessary
           const questionDocRef = doc(db, "questions", questionId);
           promises.push(
             getDoc(questionDocRef).then((questionDoc) => {
               if (questionDoc.exists()) {
                 const questionData = questionDoc.data();
-                const importance = parseInt(questionData.importance, 10) || 1;
 
+                // Exclude "Not Applicable" questions from the count and score
                 if (response !== "Not Applicable") {
-                  totalImportance += importance;
-                }
+                  applicableQuestions++; // Count only applicable questions
 
-                if (response === "Yes") {
-                  totalScore += 2 * importance;
-                } else if (response === "Partially") {
-                  totalScore += 1 * importance;
-                } else if (response === "No") {
-                  improvementAreas.push({
-                    question: questionData.question,
-                    suggestion: questionData.suggestion,
-                  });
+                  if (response === "Yes") {
+                    totalScore += 2; // Full score for "Yes"
+                  } else if (response === "Partially") {
+                    totalScore += 1; // Partial score for "Partially"
+                  } else if (response === "No") {
+                    // Add to improvement areas
+                    improvementAreas.push({
+                      question: questionData.question,
+                      suggestions: questionData.suggestions, // Now using the array of suggestions
+                    });
+                  }
                 }
               }
             })
@@ -106,14 +109,17 @@ const calculateAssessmentResult = (userId) => {
 
       Promise.all(promises)
         .then(() => {
-          const normalizedScore = totalImportance
-            ? (totalScore / (2 * totalImportance)) * 100
+          // Normalize the score based on the number of applicable questions
+          const normalizedScore = applicableQuestions
+            ? (totalScore / (2 * applicableQuestions)) * 100
             : 0;
 
+          // Update user's result in Firestore
           return updateDoc(doc(db, "users", userId), {
             "results.score": normalizedScore,
             "results.improvementAreas": improvementAreas,
           }).then(() => {
+            // Display the results after calculation
             displayResults(normalizedScore, improvementAreas);
           });
         })
@@ -126,26 +132,46 @@ const calculateAssessmentResult = (userId) => {
     });
 };
 
-// Function to display the results
+// Function to display the results with card design
 const displayResults = (score, improvementAreas) => {
   const resultContainer = document.getElementById("resultContainer");
   if (resultContainer) {
+    // Clear the container before adding new content
     resultContainer.innerHTML = `
       <h3>Assessment Results</h3>
-      <p>Score: ${score.toFixed(2)}%</p>
+      <p><strong>Score:</strong> ${score.toFixed(2)}%</p>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar" style="width: ${score.toFixed(
+          2
+        )}%">${score.toFixed(2)}%</div>
+      </div>
       <h4>Areas for Improvement:</h4>
-      <ul>
-        ${improvementAreas
-          .map(
-            (area) => `
-            <li>
-              <strong>Question:</strong> ${area.question}<br>
-              <strong>Suggestion:</strong> ${area.suggestion}
-            </li>`
-          )
-          .join("")}
-      </ul>
     `;
+
+    // Loop through each improvement area and create a card for it
+    improvementAreas.forEach((area) => {
+      const card = document.createElement("div");
+      card.className = "card"; // Applying card style
+
+      const question = document.createElement("p");
+      question.innerHTML = `<strong>Question:</strong> ${area.question}`;
+
+      const suggestionList = document.createElement("ul");
+      area.suggestions.forEach((suggestion) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = suggestion;
+        suggestionList.appendChild(listItem);
+      });
+
+      const suggestionsDiv = document.createElement("div");
+      suggestionsDiv.className = "suggestions";
+      suggestionsDiv.innerHTML = "<strong>Suggestions:</strong>";
+      suggestionsDiv.appendChild(suggestionList);
+
+      card.appendChild(question);
+      card.appendChild(suggestionsDiv);
+      resultContainer.appendChild(card);
+    });
   }
 };
 
