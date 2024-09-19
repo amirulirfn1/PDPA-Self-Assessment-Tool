@@ -120,9 +120,10 @@
         background-color: #006666;
       }
 
+      /* Ensure the modal and overlay are on the top */
       #editQuestionForm {
         display: none;
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: white;
         position: fixed;
         top: 50%;
         left: 50%;
@@ -130,7 +131,7 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+        z-index: 1000; /* Make sure the form is above other elements */
         width: 90%;
         max-width: 400px;
       }
@@ -142,25 +143,33 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 255, 255, 0.5);
-        z-index: 999;
+        background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+        z-index: 999; /* Ensure the overlay is below the form */
       }
 
-      #editQuestionForm label {
-        color: #fff;
-      }
-
-      #editQuestionForm input,
-      #editQuestionForm textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-      }
-
-      #editQuestionForm .btn {
+      /* Ensure buttons are clickable and styled properly */
+      #editQuestionForm button {
         margin-top: 10px;
+        background-color: #008080;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+
+      #editQuestionForm button:hover {
+        background-color: #006666;
+      }
+
+      /* Ensure cancel button looks like a secondary action */
+      #editQuestionForm button.cancel {
+        background-color: #ccc;
+        color: #333;
+      }
+
+      #editQuestionForm button.cancel:hover {
+        background-color: #bbb;
       }
     </style>
   </head>
@@ -192,11 +201,12 @@
           <div id="questionsContainer"></div>
 
           <div class="pagination">
+            <button class="btn" onclick="addQuestion()">Add Question</button>
             <button class="btn" id="prevPageBtn" disabled>Previous</button>
             <button class="btn" id="nextPageBtn">Next</button>
           </div>
 
-          <form id="editQuestionForm">
+          <form id="editQuestionForm" style="display: none">
             <h2>Edit Question</h2>
             <label for="category">Category:</label>
             <input type="text" id="category" name="category" />
@@ -207,17 +217,22 @@
             <label for="question">Question:</label>
             <textarea id="question" name="question"></textarea>
 
-            <label for="suggestion">Suggestion:</label>
-            <textarea id="suggestion" name="suggestion"></textarea>
-
-            <label for="importance">Importance:</label>
-            <input type="text" id="importance" name="importance" />
+            <!-- Pre-defined suggestion fields (up to 5) -->
+            <label for="suggestions">Suggestions:</label>
+            <div id="suggestions">
+              <textarea class="suggestion-field" name="suggestion_0"></textarea>
+              <textarea class="suggestion-field" name="suggestion_1"></textarea>
+              <textarea class="suggestion-field" name="suggestion_2"></textarea>
+              <textarea class="suggestion-field" name="suggestion_3"></textarea>
+              <textarea class="suggestion-field" name="suggestion_4"></textarea>
+            </div>
 
             <button type="submit" class="btn">Save</button>
-            <button type="button" class="btn" onclick="cancelEdit()">
+            <button type="button" class="btn cancel" onclick="cancelEdit()">
               Cancel
             </button>
           </form>
+
           <div id="overlay"></div>
         </div>
       </div>

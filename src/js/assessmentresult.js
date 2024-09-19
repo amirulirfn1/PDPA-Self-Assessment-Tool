@@ -13,7 +13,6 @@ import {
   query,
   where,
   getDocs,
-  updateDoc,
   doc,
   getDoc,
 } from "firebase/firestore";
@@ -59,76 +58,60 @@ const loadUserDetails = (userId) => {
     });
 };
 
-// Function to calculate and display the assessment result (excluding "Not Applicable")
-const calculateAssessmentResult = (userId) => {
-  const q = query(collection(db, "assessments"), where("userId", "==", userId));
+// Function to retrieve and display the assessment result
+const displayAssessmentResults = (userId) => {
+  const userDocRef = doc(db, "users", userId);
+  getDoc(userDocRef)
+    .then((docSnap) => {
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        const improvementAreaIds = userData.results.improvementAreas || [];
 
-  getDocs(q)
-    .then((querySnapshot) => {
-      let totalScore = 0;
-      let applicableQuestions = 0; // Only count applicable questions (exclude "Not Applicable")
-      const improvementAreas = [];
+        console.log("Improvement Area IDs:", improvementAreaIds); // Debugging output
 
-      const promises = []; // Track promises to get question data
+        // Fetch details for each question ID in improvementAreas
+        const fetchPromises = improvementAreaIds.map((questionId) =>
+          getDoc(doc(db, "questions", questionId))
+        );
 
-      querySnapshot.forEach((assessmentDoc) => {
-        const assessment = assessmentDoc.data();
-        const responses = assessment.responses;
+        Promise.all(fetchPromises)
+          .then((questionDocs) => {
+            const improvementAreas = [];
 
-        for (const questionId in responses) {
-          const response = responses[questionId];
-
-          // Fetch question details to display improvement suggestion if necessary
-          const questionDocRef = doc(db, "questions", questionId);
-          promises.push(
-            getDoc(questionDocRef).then((questionDoc) => {
+            questionDocs.forEach((questionDoc, index) => {
               if (questionDoc.exists()) {
                 const questionData = questionDoc.data();
+                console.log(`Question ${index + 1} Data:`, questionData); // Debugging output
 
-                // Exclude "Not Applicable" questions from the count and score
-                if (response !== "Not Applicable") {
-                  applicableQuestions++; // Count only applicable questions
+                // Ensure suggestions is an array and handle undefined data
+                const suggestions = Array.isArray(questionData.suggestions)
+                  ? questionData.suggestions
+                  : [];
 
-                  if (response === "Yes") {
-                    totalScore += 2; // Full score for "Yes"
-                  } else if (response === "Partially") {
-                    totalScore += 1; // Partial score for "Partially"
-                  } else if (response === "No") {
-                    // Add to improvement areas
-                    improvementAreas.push({
-                      question: questionData.question,
-                      suggestions: questionData.suggestions, // Now using the array of suggestions
-                    });
-                  }
-                }
+                improvementAreas.push({
+                  question:
+                    questionData.question || "No question text available",
+                  suggestions: suggestions, // Ensure suggestions is always an array
+                });
+              } else {
+                console.error(
+                  `Question ${index + 1} does not exist in the database.`
+                );
               }
-            })
-          );
-        }
-      });
+            });
 
-      Promise.all(promises)
-        .then(() => {
-          // Normalize the score based on the number of applicable questions
-          const normalizedScore = applicableQuestions
-            ? (totalScore / (2 * applicableQuestions)) * 100
-            : 0;
-
-          // Update user's result in Firestore
-          return updateDoc(doc(db, "users", userId), {
-            "results.score": normalizedScore,
-            "results.improvementAreas": improvementAreas,
-          }).then(() => {
-            // Display the results after calculation
-            displayResults(normalizedScore, improvementAreas);
+            const score = userData.results.score || 0;
+            displayResults(score, improvementAreas); // Call the display function with fetched data
+          })
+          .catch((error) => {
+            console.error("Error fetching question details: ", error);
           });
-        })
-        .catch((error) => {
-          console.error("Error calculating assessment result: ", error);
-        });
+      } else {
+        console.error("No such document!");
+      }
     })
     .catch((error) => {
-      console.error("Error fetching assessments: ", error);
+      console.error("Error fetching user details: ", error);
     });
 };
 
@@ -139,7 +122,7 @@ const displayResults = (score, improvementAreas) => {
     // Clear the container before adding new content
     resultContainer.innerHTML = `
       <h3>Assessment Results</h3>
-      <p><strong>Score:</strong> ${score.toFixed(2)}%</p>
+      <p><strong>Implementation Percentage:</strong> ${score.toFixed(2)}%</p>
       <div class="progress">
         <div class="progress-bar" id="progressBar" style="width: ${score.toFixed(
           2
@@ -149,7 +132,9 @@ const displayResults = (score, improvementAreas) => {
     `;
 
     // Loop through each improvement area and create a card for it
-    improvementAreas.forEach((area) => {
+    improvementAreas.forEach((area, index) => {
+      console.log(`Displaying Question ${index + 1}:`, area); // Debugging output
+
       const card = document.createElement("div");
       card.className = "card"; // Applying card style
 
@@ -157,11 +142,16 @@ const displayResults = (score, improvementAreas) => {
       question.innerHTML = `<strong>Question:</strong> ${area.question}`;
 
       const suggestionList = document.createElement("ul");
-      area.suggestions.forEach((suggestion) => {
-        const listItem = document.createElement("li");
-        listItem.textContent = suggestion;
-        suggestionList.appendChild(listItem);
-      });
+      // Safely iterate over suggestions only if it's an array
+      if (Array.isArray(area.suggestions) && area.suggestions.length > 0) {
+        area.suggestions.forEach((suggestion) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = suggestion;
+          suggestionList.appendChild(listItem);
+        });
+      } else {
+        console.warn(`No suggestions found for Question ${index + 1}`); // Debugging output
+      }
 
       const suggestionsDiv = document.createElement("div");
       suggestionsDiv.className = "suggestions";
@@ -175,12 +165,12 @@ const displayResults = (score, improvementAreas) => {
   }
 };
 
-// Check authentication state, load user details, and calculate the assessment result
+// Check authentication state, load user details, and display assessment results
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const userId = user.uid;
     loadUserDetails(userId); // Load company and user details
-    calculateAssessmentResult(userId); // Calculate and display assessment results
+    displayAssessmentResults(userId); // Fetch and display assessment results
   } else {
     window.location.href = "/signin.html";
   }

@@ -4,9 +4,12 @@ const main = require("./main.js");
 const loadFeedbacks = (startDate, endDate) => {
   let feedbackQuery = main.collection(main.db, "feedback");
 
+  // Ensure dates are valid and create Date objects for Firestore query
   if (startDate && endDate) {
     const startTimestamp = new Date(startDate);
     const endTimestamp = new Date(endDate);
+    endTimestamp.setHours(23, 59, 59, 999); // Include entire end date
+
     feedbackQuery = main.query(
       feedbackQuery,
       main.where("timestamp", ">=", startTimestamp),
@@ -20,18 +23,25 @@ const loadFeedbacks = (startDate, endDate) => {
       const feedbackContainer = document.getElementById("feedbackContainer");
       feedbackContainer.innerHTML = ""; // Clear previous content
 
+      if (querySnapshot.empty) {
+        feedbackContainer.innerHTML =
+          "<p>No feedback available for the selected date range.</p>";
+        return;
+      }
+
       querySnapshot.forEach((doc) => {
         const feedbackData = doc.data();
         const feedbackItem = document.createElement("div");
         feedbackItem.className = "feedback-item";
 
+        // Convert string or Firestore timestamp to a Date object
+        const feedbackDate = new Date(feedbackData.timestamp);
+
         feedbackItem.innerHTML = `
           <p><strong>Category:</strong> ${feedbackData.category}</p>
           <p><strong>Rating:</strong> ${feedbackData.rating}</p>
           <p><strong>Feedback:</strong> ${feedbackData.feedback}</p>
-          <p><strong>Date:</strong> ${new Date(
-            feedbackData.timestamp.seconds * 1000
-          ).toLocaleString()}</p>
+          <p><strong>Date:</strong> ${feedbackDate.toLocaleString()}</p>
         `;
 
         feedbackContainer.appendChild(feedbackItem);
@@ -42,14 +52,18 @@ const loadFeedbacks = (startDate, endDate) => {
     });
 };
 
-// Function to handle form submission
+// Function to handle form submission for filtering feedback
 const handleFormSubmit = (event) => {
   event.preventDefault();
 
   const startDate = document.querySelector("#startDate").value;
   const endDate = document.querySelector("#endDate").value;
 
-  loadFeedbacks(startDate, endDate);
+  if (startDate && endDate) {
+    loadFeedbacks(startDate, endDate);
+  } else {
+    alert("Please select both start and end dates.");
+  }
 };
 
 // Function to handle user sign-out
@@ -68,7 +82,7 @@ const handleSignOut = () => {
 // Check authentication state and load the feedback data
 main.onAuthStateChanged(main.auth, (user) => {
   if (user) {
-    loadFeedbacks();
+    loadFeedbacks(); // Load all feedback by default
   } else {
     window.location.href = "/signin.html";
   }

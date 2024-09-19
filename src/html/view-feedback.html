@@ -88,6 +88,38 @@
         margin-bottom: 20px;
       }
 
+      /* Date range form styling */
+      #filterForm {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      #filterForm label {
+        font-weight: bold;
+      }
+
+      #filterForm input[type="date"] {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      #filterForm button {
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #filterForm button:hover {
+        background-color: #006666;
+      }
+
+      /* Feedback items styling */
       .feedback-item {
         border-bottom: 1px solid #ddd;
         padding: 10px 0;
@@ -148,6 +180,19 @@
       <div class="content">
         <div class="content-inner">
           <h2>Feedback</h2>
+
+          <!-- Date Range Filter Form -->
+          <form id="filterForm">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" />
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" />
+
+            <button type="submit">Filter</button>
+          </form>
+
+          <!-- Feedback Container -->
           <div id="feedbackContainer"></div>
         </div>
       </div>

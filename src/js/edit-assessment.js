@@ -1,6 +1,6 @@
 const main = require("./main.js");
 
-let questionId; // Store the question ID here
+let questionId = null; // Store the question ID here
 let currentPage = 1;
 const questionsPerPage = 5;
 let questions = [];
@@ -31,14 +31,23 @@ const displayQuestions = () => {
   const questionsToShow = questions.slice(start, end);
 
   questionsToShow.forEach(({ id, data }) => {
+    const suggestionsHtml =
+      data.suggestions && data.suggestions.length
+        ? data.suggestions
+            .map(
+              (suggestion, index) =>
+                `<p><strong>Suggestion ${index + 1}:</strong> ${suggestion}</p>`
+            )
+            .join("")
+        : "<p>No suggestions available</p>";
+
     const questionItem = document.createElement("div");
     questionItem.className = "question-item";
     questionItem.innerHTML = `
       <p><strong>Category:</strong> ${data.category}</p>
       <p><strong>Description:</strong> ${data.description}</p>
       <p><strong>Question:</strong> ${data.question}</p>
-      <p><strong>Suggestion:</strong> ${data.suggestion}</p>
-      <p><strong>Importance:</strong> ${data.importance}</p>
+      ${suggestionsHtml}
       <button class="btn" onclick="editQuestion('${id}')">Edit</button>
       <button class="btn" onclick="deleteQuestion('${id}')">Delete</button>
     `;
@@ -71,13 +80,19 @@ const populateForm = (data) => {
   document.querySelector("#category").value = data.category || "";
   document.querySelector("#description").value = data.description || "";
   document.querySelector("#question").value = data.question || "";
-  document.querySelector("#suggestion").value = data.suggestion || "";
-  document.querySelector("#importance").value = data.importance || "";
+
+  // Populate suggestions (up to 5 suggestions for simplicity)
+  const suggestionFields = document.querySelectorAll(".suggestion-field");
+  for (let i = 0; i < suggestionFields.length; i++) {
+    suggestionFields[i].value =
+      data.suggestions && data.suggestions[i] ? data.suggestions[i] : "";
+  }
+
   document.querySelector("#editQuestionForm").style.display = "block";
   document.getElementById("overlay").style.display = "block";
 };
 
-// Function to handle form submission
+// Function to handle form submission for both adding and updating questions
 const handleFormSubmit = (event) => {
   event.preventDefault();
 
@@ -85,8 +100,9 @@ const handleFormSubmit = (event) => {
     category: document.querySelector("#category").value,
     description: document.querySelector("#description").value,
     question: document.querySelector("#question").value,
-    suggestion: document.querySelector("#suggestion").value,
-    importance: document.querySelector("#importance").value,
+    suggestions: Array.from(document.querySelectorAll(".suggestion-field")).map(
+      (field) => field.value
+    ), // Collect all suggestion fields into an array
   };
 
   if (questionId) {
@@ -150,12 +166,15 @@ window.deleteQuestion = (id) => {
   }
 };
 
-// Function to handle add button click
+// Function to handle "Add Question" button click
 window.addQuestion = () => {
   questionId = null;
   document.querySelector("#editQuestionForm").style.display = "block";
   document.getElementById("overlay").style.display = "block";
   document.querySelector("#editQuestionForm").reset();
+  document
+    .querySelectorAll(".suggestion-field")
+    .forEach((field) => (field.value = "")); // Clear suggestions
 };
 
 // Function to handle cancel button click
