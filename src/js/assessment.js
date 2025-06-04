@@ -16,6 +16,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { calculateScore } from "./utils";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -246,23 +247,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const userId = auth.currentUser.uid;
-    let score = 0;
-    const improvementAreas = [];
-
-    // Calculate score and determine improvement areas
-    for (const questionId in responses) {
-      const response = responses[questionId];
-
-      if (response === "Yes") {
-        score += 2; // Full score for "Yes"
-      } else if (response === "Partially") {
-        score += 1; // Partial score for "Partially"
-      } else if (response === "No") {
-        improvementAreas.push(questionId); // Log areas that need improvement
-      }
-    }
-
-    const normalizedScore = (score / (questions.length * 2)) * 100;
+    const { normalizedScore, improvementAreas } = calculateScore(
+      responses,
+      questions.length
+    );
 
     try {
       await addDoc(collection(db, "assessments"), {
