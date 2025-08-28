@@ -49,9 +49,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+// Secondary Firebase app for admin operations
+const secondaryApp = initializeApp(firebaseConfig, "secondary");
 const db = getFirestore(app);
 const auth = getAuth(app);
-const auth2 = getAuth(app); // Secondary auth instance for admin creation
+const auth2 = getAuth(secondaryApp);
 const storage = getStorage(app);
 
 // Firestore collections
@@ -69,6 +71,7 @@ const loader = new Loader({
 export {
   db,
   auth,
+  auth2,
   storage,
   collection,
   usersDB,
