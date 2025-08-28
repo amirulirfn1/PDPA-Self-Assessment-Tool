@@ -66,7 +66,7 @@ loginForm.addEventListener("submit", async (e) => {
         main.doc(main.db, "users", cred.user.uid)
       );
 
-      if (userDoc.exists) {
+      if (userDoc.exists()) {
         console.log("User document found:", userDoc.data());
         window.location.href = "/home.html";
       } else {
@@ -74,7 +74,7 @@ loginForm.addEventListener("submit", async (e) => {
           main.doc(main.db, "admins", cred.user.uid)
         );
 
-        if (adminDoc.exists) {
+        if (adminDoc.exists()) {
           console.log("Admin document found:", adminDoc.data());
           window.location.href = "/adminmain.html";
         } else {

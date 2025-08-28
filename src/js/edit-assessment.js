@@ -63,7 +63,7 @@ const loadQuestion = (id) => {
   main
     .getDoc(main.doc(main.db, "questions", id))
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists()) {
         const questionData = doc.data();
         populateForm(questionData);
       } else {

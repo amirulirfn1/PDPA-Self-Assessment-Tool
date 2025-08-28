@@ -6,7 +6,7 @@ main.onAuthStateChanged(main.auth, (user) => {
     main
       .getDoc(main.doc(main.db, "admins", user.uid))
       .then((doc) => {
-        if (doc.exists) {
+        if (doc.exists()) {
           window.location.href = "/adminmain.html";
         } else {
           alert("You are not authorized to access this page.");
@@ -36,7 +36,7 @@ loginForm.addEventListener("submit", (e) => {
       return main.getDoc(main.doc(main.db, "admins", user.uid));
     })
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists()) {
         alert("Sign in successful");
         window.location.href = "/adminmain.html";
       } else {
