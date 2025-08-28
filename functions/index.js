@@ -7,13 +7,38 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+const {onCall, HttpsError} = require("firebase-functions/v2/https");
+const admin = require("firebase-admin");
+const crypto = require("crypto");
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+admin.initializeApp();
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.createAdminUser = onCall(async (request) => {
+  const {email, name} = request.data;
+  if (!email || !name) {
+    throw new HttpsError("invalid-argument", "Email and name are required");
+  }
+  try {
+    const tempPassword = crypto
+        .randomBytes(12)
+        .toString("base64")
+        .slice(0, 16);
+
+    const userRecord = await admin.auth().createUser({
+      email,
+      password: tempPassword,
+    });
+
+    await admin.firestore().collection("admins").doc(userRecord.uid).set({
+      username: name,
+      email,
+      type: "admin",
+    });
+
+    await admin.auth().setCustomUserClaims(userRecord.uid, {admin: true});
+
+    return {uid: userRecord.uid};
+  } catch (error) {
+    throw new HttpsError("internal", error.message);
+  }
+});

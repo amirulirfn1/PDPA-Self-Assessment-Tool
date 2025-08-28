@@ -1,4 +1,7 @@
 const main = require("./main.js");
+const { getFunctions, httpsCallable } = require("firebase/functions");
+const functions = getFunctions();
+const createAdminUser = httpsCallable(functions, "createAdminUser");
 let userData;
 
 main.onAuthStateChanged(main.auth, (user) => {
@@ -53,29 +56,22 @@ if (newAdminBtn) {
 }
 
 if (newAdminForm) {
-  newAdminForm.addEventListener("submit", (e) => {
+  newAdminForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const adminName = newAdminForm.querySelector("#adminName").value;
     const adminEmail = newAdminForm.querySelector("#adminEmail").value;
 
-    // Create a new admin user with email and default password
-    main
-      .createUserWithEmailAndPassword(main.auth2, adminEmail, "defaultPassword")
-      .then((cred) => {
-        return main.setDoc(main.doc(main.db, "admins", cred.user.uid), {
-          username: adminName,
-          email: adminEmail,
-          type: "admin",
-        });
-      })
-      .then(() => {
-        alert("New admin created successfully.");
-        newAdminForm.reset();
-        newAdminForm.classList.remove("show");
-      })
-      .catch((error) => {
-        console.error("Error creating new admin:", error);
-        alert(error.message);
-      });
+    try {
+      await createAdminUser({ name: adminName, email: adminEmail });
+      await main.sendPasswordResetEmail(main.auth2, adminEmail);
+      alert(
+        "New admin created successfully. A password reset email has been sent."
+      );
+      newAdminForm.reset();
+      newAdminForm.classList.remove("show");
+    } catch (error) {
+      console.error("Error creating new admin:", error);
+      alert(error.message);
+    }
   });
 }
