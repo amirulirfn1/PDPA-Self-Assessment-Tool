@@ -48,34 +48,17 @@ const newAdminForm = document.querySelector("#newAdminForm");
 if (newAdminBtn) {
   newAdminBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    newAdminForm.classList.toggle("show");
+    alert(
+      "Legacy admin creation is disabled. Use the new /admin role assignment flow."
+    );
   });
 }
 
 if (newAdminForm) {
   newAdminForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const adminName = newAdminForm.querySelector("#adminName").value;
-    const adminEmail = newAdminForm.querySelector("#adminEmail").value;
-
-    // Create a new admin user with email and default password
-    main
-      .createUserWithEmailAndPassword(main.auth2, adminEmail, "defaultPassword")
-      .then((cred) => {
-        return main.setDoc(main.doc(main.db, "admins", cred.user.uid), {
-          username: adminName,
-          email: adminEmail,
-          type: "admin",
-        });
-      })
-      .then(() => {
-        alert("New admin created successfully.");
-        newAdminForm.reset();
-        newAdminForm.classList.remove("show");
-      })
-      .catch((error) => {
-        console.error("Error creating new admin:", error);
-        alert(error.message);
-      });
+    alert(
+      "Legacy admin creation is disabled. Use the new /admin role assignment flow."
+    );
   });
 }

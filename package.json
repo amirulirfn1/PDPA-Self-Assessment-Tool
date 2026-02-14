@@ -1,25 +1,62 @@
 {
-  "name": "PRIVACY-POLICY-PRO",
+  "name": "pdpa-self-assessment-tool",
   "version": "1.0.0",
-  "description": "",
+  "description": "PDPA Malaysia compliance platform (Next.js + Firebase)",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack server"
+    "dev": "npm --prefix auditless-app run dev",
+    "start": "npm --prefix auditless-app run start",
+    "build": "npm run build:app && npm run build:functions",
+    "build:app": "npm --prefix auditless-app run build",
+    "build:functions": "npm --prefix functions run build",
+    "build:legacy": "webpack --mode=production",
+    "build:dev:legacy": "webpack --mode=development",
+    "clean": "rimraf dist",
+    "clean:app": "npm --prefix auditless-app run clean",
+    "clean:functions": "npm --prefix functions run clean",
+    "lint": "npm run lint:app && npm run lint:functions",
+    "lint:app": "npm --prefix auditless-app run lint",
+    "lint:functions": "npm --prefix functions run lint",
+    "lint:legacy": "eslint src/**/*.js",
+    "lint:fix:legacy": "eslint src/**/*.js --fix",
+    "typecheck": "npm run typecheck:app && npm run typecheck:functions",
+    "typecheck:app": "npm --prefix auditless-app run typecheck",
+    "typecheck:functions": "npm --prefix functions run typecheck",
+    "test": "npm run test:app && npm run test:functions",
+    "test:app": "npm --prefix auditless-app run test",
+    "test:functions": "npm --prefix functions run test",
+    "test:legacy": "jest",
+    "test:watch": "jest --watch",
+    "analyze": "webpack --analyze",
+    "firebase:deploy": "firebase deploy",
+    "firebase:serve": "firebase emulators:start"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "pdpa",
+    "privacy",
+    "compliance",
+    "assessment",
+    "malaysia",
+    "data-protection"
+  ],
+  "author": "UTM Team",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.21.5",
     "@babel/preset-env": "^7.21.5",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.2",
     "bootstrap": "^5.2.3",
     "css-loader": "^6.7.3",
+    "dotenv": "^16.0.3",
     "file-loader": "^6.2.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.1",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "mini-css-extract-plugin": "^2.7.5",
+    "rimraf": "^5.0.0",
+    "sass-embedded": "^1.93.2",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
     "webpack": "^5.81.0",
@@ -41,5 +78,14 @@
     "sass": "^1.77.6",
     "swiper": "^9.2.4",
     "waypoints": "^4.0.1"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

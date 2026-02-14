@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -23,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
-#preloader {  
+#preloader {
   position: fixed;
   top: 0;
   left: 0;
@@ -32,6 +34,11 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 9999;
   overflow: hidden;
   background: $secondary;
+  // CSS-only fallback: auto-hide preloader after 4s in case JS fails
+  // This does not replace JS removal (which is faster), but prevents infinite overlays
+  opacity: 1;
+  visibility: visible;
+  animation: preloader-hide 0s linear 4s forwards;
 }
 
 #preloader:before {
@@ -46,6 +53,21 @@ h1, h2, h3, h4, h5, h6 {
   width: 60px;
   height: 60px;
   animation: animate-preloader 1s linear infinite;
+}
+
+#preloader.preloader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+@keyframes preloader-hide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 @keyframes animate-preloader {

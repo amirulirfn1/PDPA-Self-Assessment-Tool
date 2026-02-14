@@ -1,44 +1,138 @@
+rules_version = "2";
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow authenticated users to read and write their user document
-    match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
-      allow write: if request.auth != null && request.auth.uid == userId;
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    // Allow admins to read and write any user document
-    match /users/{userId} {
-      allow read, write, delete: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
-    }
-    
-    // Allow authenticated admins to read and write their own admin document
-    match /admins/{adminId} {
-      allow read, write, delete: if request.auth != null && request.auth.uid == adminId;
-    }
-    
-    // Allow admins to read and write any admin document
-    match /admins/{adminId} {
-      allow read, write, delete: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    function isPlatformAdmin() {
+      return isSignedIn() &&
+        (request.auth.token.role == "owner" || request.auth.token.role == "admin");
     }
 
-    // Allow authenticated users to read and write assessments
-    match /assessments/{document=**} {
-      allow read, write, delete: if request.auth != null && request.auth.uid != null;
-    }
-    
-    // Allow authenticated users to read and write feedbacks
-    match /feedback/{document=**} {
-      allow read, write, delete: if request.auth != null && request.auth.uid != null;
+    function memberDoc(orgId) {
+      return get(/databases/$(database)/documents/organizations/$(orgId)/members/$(request.auth.uid));
     }
 
-    // Allow reading from the questions collection
-    match /questions/{document=**} {
-      allow read, write, delete: if request.auth != null;
+    function isActiveMember(orgId) {
+      return isSignedIn() &&
+        memberDoc(orgId).exists() &&
+        memberDoc(orgId).data.status == "active";
     }
 
-    // Allow admins to read feedback
-    match /feedback/{document=**} {
-      allow read: if request.auth != null && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    function hasOrgRole(orgId, roles) {
+      return isActiveMember(orgId) && memberDoc(orgId).data.role in roles;
+    }
+
+    function canWriteOrgData(orgId) {
+      return hasOrgRole(orgId, ["owner", "admin", "assessor"]);
+    }
+
+    function canAdminOrg(orgId) {
+      return hasOrgRole(orgId, ["owner", "admin"]);
+    }
+
+    match /organizations/{orgId} {
+      allow read: if isActiveMember(orgId);
+      allow create: if isSignedIn();
+      allow update, delete: if canAdminOrg(orgId);
+
+      match /members/{uid} {
+        allow read: if isActiveMember(orgId);
+        allow create, update, delete: if canAdminOrg(orgId);
+      }
+    }
+
+    match /users/{uid} {
+      allow read, create, update: if isSignedIn() && request.auth.uid == uid;
+      allow delete: if false;
+    }
+
+    match /control_library/{controlId} {
+      allow read: if isSignedIn();
+      allow write: if isPlatformAdmin();
+    }
+
+    match /assessment_templates/{templateId} {
+      allow read: if isSignedIn();
+      allow write: if isPlatformAdmin();
+    }
+
+    match /assessment_runs/{runId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /assessments/{assessmentId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /action_plans/{planId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /evidence_items/{evidenceId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /data_inventory/{recordId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /data_flows/{flowId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /notices/{noticeId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /incidents/{incidentId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /compliance_tasks/{taskId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow create: if isSignedIn() && canWriteOrgData(request.resource.data.orgId);
+      allow update: if isSignedIn() && canWriteOrgData(resource.data.orgId);
+      allow delete: if false;
+    }
+
+    match /audit_events/{eventId} {
+      allow read: if isSignedIn() && isActiveMember(resource.data.orgId);
+      allow write: if false;
+    }
+
+    match /feedback_legacy/{feedbackId} {
+      allow read: if isSignedIn() && canAdminOrg(resource.data.orgId);
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

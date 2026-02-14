@@ -6,33 +6,17 @@ import Waypoint from "waypoints/lib/noframework.waypoints.min.js";
 import GLightbox from "glightbox";
 import Swiper from "swiper/bundle";
 
-import { initializeApp } from "firebase/app";
+// Import centralized Firebase configuration
 import {
-  getFirestore,
+  db,
+  auth,
   collection,
   getDocs,
   addDoc,
   updateDoc,
   doc,
-} from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBibjeVdQv1h-M-UjdgVzcDj8tKCb9LHYA",
-  authDomain: "pdpa-self-assessment-tool.firebaseapp.com",
-  databaseURL: "https://pdpa-self-assessment-tool-default-rtdb.firebaseio.com",
-  projectId: "pdpa-self-assessment-tool",
-  storageBucket: "pdpa-self-assessment-tool.appspot.com",
-  messagingSenderId: "394371555199",
-  appId: "1:394371555199:web:ef84f0a031b9bf8bbd444a",
-  measurementId: "G-PXLM35TRCV",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+  onAuthStateChanged,
+} from "../shared/config/firebase.js";
 
 let currentQuestionIndex = 0;
 let questions = [];
